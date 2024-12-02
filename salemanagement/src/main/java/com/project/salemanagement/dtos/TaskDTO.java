@@ -19,6 +19,5 @@ public class TaskDTO {
     private String status;
     private LocalDate startDate;
     private LocalDate completedDate;
-    //test
 
 }
