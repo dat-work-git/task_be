@@ -8,16 +8,15 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Builder
 public class TaskDTO {
-    private String Title;
+    private String title;
     private String description;
     private String action;
     private Boolean urgent;
-    private String assign;
+    private Long assign;
     private String status;
     private LocalDate startDate;
     private LocalDate completedDate;
-
+    private Long companyId;
 }
