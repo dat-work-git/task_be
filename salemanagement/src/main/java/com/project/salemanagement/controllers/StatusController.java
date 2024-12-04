@@ -1,4 +1,4 @@
 package com.project.salemanagement.controllers;
 
-public class StatusComtroller {
+public class StatusController {
 }
