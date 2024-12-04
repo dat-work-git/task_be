@@ -27,7 +27,7 @@ public class StatusController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("") // lấy danh sách order của user theo id
+    @GetMapping("")
     public ResponseEntity<?> getAllStatus() {
         try {
             List<Status> statusList = statusService.statusList();
