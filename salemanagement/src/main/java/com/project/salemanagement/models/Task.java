@@ -31,7 +31,7 @@ public class Task {
     private Boolean urgent;
 
     @ManyToOne
-    @JoinColumn(name = "assigned_user_id", referencedColumnName = "id")
+    @JoinColumn(name = "assigned_user_id")
     private User assignedUser;
 
     @Enumerated(EnumType.STRING)

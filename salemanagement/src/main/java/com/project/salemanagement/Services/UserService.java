@@ -13,16 +13,16 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService  implements IUserService{
+public class UserService implements IUserService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
 
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
-        if(!userRepo.existsByEmail(userDTO.getEmail())){
+        if (!userRepo.existsByEmail(userDTO.getEmail())) {
             Role role = roleRepo.findById(userDTO.getRoleId()).orElseThrow(
                     () -> new IllegalArgumentException("không tìm thấy role"));
-            if(role.getName().equals(Role.ADMIN)){
+            if (role.getName().equals(Role.ADMIN)) {
                 throw new InvalidParameterException("mày không thể tạo acc admin được thằng nhóc à!");
 
             }
@@ -40,21 +40,23 @@ public class UserService  implements IUserService{
                 user.setPassword(encodedPassword);
             }*/
             userRepo.save(user);
-            return user;}
+            return user;
+        }
         return null;
     }
 
     @Override
     public String login(String email, String password, Long RoleId) {
         Optional<User> userOptional = userRepo.findByEmail(email);
-        if (userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             throw new IllegalArgumentException("Invalid phone number/password");
         }
         User user = userOptional.get();
-        if(user.getEmail() != email || user.getPassword() != password){
+        if (!user.getEmail().equals(email) ||
+                !user.getPassword().equals(password)) {
             throw new IllegalArgumentException("Invalid phone number/password");
         }
-        if(user.getRole().getId() != RoleId){
+        if (user.getRole().getId() != RoleId) {
             throw new IllegalArgumentException("Wrong Role!");
         }
         return "Sucessfully!";

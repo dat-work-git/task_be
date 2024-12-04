@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
+import java.sql.Date;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class TaskService implements ITasksService {
     public Task createTask(TaskDTO taskDTO) {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Company with id:" + taskDTO.getCompanyId()));
-        User user = userRepo.findById(taskDTO.getAssign())
+        User user = userRepo.findByEmail(taskDTO.getAssign())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find User with id:" + taskDTO.getAssign()));
 
         Task task = Task.builder()
@@ -36,7 +37,9 @@ public class TaskService implements ITasksService {
                 .startDate(taskDTO.getStartDate())
                 .completedDate(taskDTO.getCompletedDate())
                 .assignedUser(user)
+                .status(Status.fromDisplayName(taskDTO.getStatus()))
                 .build();
+        taskRepo.save(task);
         return task;
     }
 
@@ -51,7 +54,7 @@ public class TaskService implements ITasksService {
     public Task updateTask(long id, TaskDTO taskDTO) {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(()->new InvalidParameterException("Cannot Found Company!"));
-        User user = userRepo.findById(taskDTO.getAssign())
+        User user = userRepo.findByEmail(taskDTO.getAssign())
                 .orElseThrow(()->new InvalidParameterException("Cannot Found User"));
         Task task = taskRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Task "));

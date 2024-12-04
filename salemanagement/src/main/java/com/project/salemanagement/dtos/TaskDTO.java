@@ -14,7 +14,7 @@ public class TaskDTO {
     private String description;
     private String action;
     private Boolean urgent;
-    private Long assign;
+    private String assign;
     private String status;
     private LocalDate startDate;
     private LocalDate completedDate;
