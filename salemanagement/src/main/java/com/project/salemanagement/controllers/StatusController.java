@@ -1,20 +1,14 @@
 package com.project.salemanagement.controllers;
-
-import com.project.salemanagement.Repositories.StatusRepo;
 import com.project.salemanagement.Services.StatusService;
 import com.project.salemanagement.dtos.StatusDTO;
-import com.project.salemanagement.dtos.TaskDTO;
 import com.project.salemanagement.models.Status;
-import com.project.salemanagement.models.Task;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("salemanagement/v1/status")
