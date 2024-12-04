@@ -1,5 +1,5 @@
 package com.project.salemanagement.models;
-
+// enum
 public enum Status {
     NOT_STARTED("Not Started"),
     DOING("Doing"),
