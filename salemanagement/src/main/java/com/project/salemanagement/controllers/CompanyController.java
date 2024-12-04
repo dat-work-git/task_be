@@ -30,7 +30,7 @@ public class CompanyController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<?> createCompany(@Valid @RequestBody CompanyDTO companyDTO,
                                            BindingResult result){
         try{
