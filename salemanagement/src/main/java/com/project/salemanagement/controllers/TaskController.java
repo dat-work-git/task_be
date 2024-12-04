@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +27,24 @@ public class TaskController {
             }
             Task task = taskService.createTask(taskDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/{taskId}") // lấy danh sách order của user theo id
+    public ResponseEntity<?> getTaskById(@Valid @PathVariable("taskId") long taskId) {
+        try {
+            Task task = taskService.getTask(taskId);
+            return ResponseEntity.ok().body(task);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("company/{companyId}") // lấy danh sách order của user theo id
+    public ResponseEntity<?> getTasksByCompanyId(@Valid @PathVariable("companyId") long companyId) {
+        try {
+            List<Task> task = taskService.taskByCompanyId(companyId);
+            return ResponseEntity.ok().body(task);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
