@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CompanyController {
     private final CompanyService companyService;
-    @GetMapping("")
+    @GetMapping("/admin")
     public ResponseEntity<?> getAllCompany(){
         List<Company> companyList = companyService.getAllCompany();
         return ResponseEntity.ok().body(companyList);
@@ -30,7 +30,16 @@ public class CompanyController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PostMapping()
+    @GetMapping("/assignedPerson/{email}")
+    public ResponseEntity<?> getCompanyByAssignedUser(@PathVariable String email){
+        try {
+            List<Company> companyList = companyService.getCompanyByAssignEmail(email);
+            return ResponseEntity.ok().body(companyList);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PostMapping("")
     public ResponseEntity<?> createCompany(@Valid @RequestBody CompanyDTO companyDTO,
                                            BindingResult result){
         try{

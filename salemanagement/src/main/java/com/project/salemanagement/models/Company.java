@@ -21,7 +21,9 @@ public class Company {
     private String email;
     @Column(name="phone",nullable = false)
     private String phone;
-    @Column(name = "assigned_person",nullable = true)
-    private String assgined_person;
+    @ManyToOne
+    @JoinColumn(name = "assigned_person", referencedColumnName = "email", nullable = false)
+    private User assignedPerson;
+
 
 }
