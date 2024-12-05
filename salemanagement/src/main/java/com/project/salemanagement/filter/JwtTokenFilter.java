@@ -49,7 +49,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     }
                 }
             }
-            filterChain.doFilter(request, response); //enable bypas cho qua hết
+            filterChain.doFilter(request, response);
         } catch (
                 Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
