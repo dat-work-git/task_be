@@ -40,7 +40,7 @@ public class TaskController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("/company") // lấy danh sách order của user theo id
+    @GetMapping("/company")
     public ResponseEntity<?> getTasksByCompanyId( @RequestParam long companyId) {
         try {
             List<Task> task = taskService.taskByCompanyId(companyId);
