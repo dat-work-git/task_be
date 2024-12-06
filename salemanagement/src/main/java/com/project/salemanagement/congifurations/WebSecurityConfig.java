@@ -30,34 +30,19 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
-                    requests.requestMatchers("api/v1/users/register",
-                                    "api/v1/users/login",
-                                    "api/v1/roles"
-                            )
+                    requests.requestMatchers("salemanagement/v1/**")
                             .permitAll()
+//                    .requestMatchers(HttpMethod.GET, "salemanagement/v1/company/assignedPerson/**").permitAll()
+//                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/company/**").permitAll()
                             // Roles
-                            .requestMatchers(HttpMethod.GET, "api/v1/roles/**").hasAnyRole(Role.ADMIN, Role.USER)
-                            // categories
-                            .requestMatchers(HttpMethod.GET, "api/v1/categories/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, "api/v1/categories/**").hasRole(Role.ADMIN)
-                            .requestMatchers(HttpMethod.PUT, "api/v1/categories/**").hasRole(Role.ADMIN)
-                            .requestMatchers(HttpMethod.DELETE, "api/v1/categories/**").hasRole(Role.ADMIN)
-                            // products
-                            .requestMatchers(HttpMethod.GET, "api/v1/products/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, "api/v1/products/**").hasAnyRole(Role.ADMIN)
-                            .requestMatchers(HttpMethod.PUT, "api/v1/products/**").hasAnyRole(Role.ADMIN)
-                            .requestMatchers(HttpMethod.DELETE, "api/v1/products/**").hasAnyRole(Role.ADMIN)
-                            //order-details
-                            .requestMatchers(HttpMethod.POST, "api/v1/orderdetail/**").hasRole(Role.USER)
-                            .requestMatchers(HttpMethod.PUT, "api/v1/orderdetail/**").hasRole(Role.ADMIN)
-                            .requestMatchers(HttpMethod.DELETE, "api/v1/orderdetail/**").hasRole(Role.ADMIN)
-                            .requestMatchers(HttpMethod.GET, "api/v1/orderdetail/**").hasAnyRole(Role.ADMIN, Role.USER)
-                            // orders
-                            .requestMatchers(HttpMethod.POST, "api/v1/order/**").hasRole(Role.USER)
-                            .requestMatchers(HttpMethod.PUT, "api/v1/order/**").hasRole(Role.ADMIN)
-                            .requestMatchers(HttpMethod.DELETE, "api/v1/order/**").hasRole(Role.ADMIN)
-                            .requestMatchers(HttpMethod.GET, "api/v1/order/**").hasAnyRole(Role.ADMIN, Role.USER)
-                            .anyRequest().authenticated();
+//                            .requestMatchers(HttpMethod.GET, "api/v1/roles/**").hasAnyRole(Role.ADMIN, Role.USER)
+//                            // categories
+//                            .requestMatchers(HttpMethod.GET, "api/v1/categories/**").permitAll()
+//                            .requestMatchers(HttpMethod.POST, "api/v1/categories/**").hasRole(Role.ADMIN)
+//                            .requestMatchers(HttpMethod.PUT, "api/v1/categories/**").hasRole(Role.ADMIN)
+//                            .requestMatchers(HttpMethod.DELETE, "api/v1/categories/**").hasRole(Role.ADMIN)
+                    // products
+                    .anyRequest().authenticated();
                 });
         http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
             @Override

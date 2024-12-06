@@ -40,7 +40,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 final String token = authHeader.substring(7);
                 final String email = jwtTokenUtil.extractEmail(token);
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    User user = (Us) userDetailsService.loadUserByUsername(email);
+                    User user = (User) userDetailsService.loadUserByUsername(email);
                     if (jwtTokenUtil.validateToken(token, user)) {
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                                 new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -58,8 +58,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private boolean isByPassToken(@NonNull HttpServletRequest request) {
         final List<Pair<String, String>> byPassTokens = Arrays.asList(
-                Pair.of("api/v1/roles", "GET"),
-                Pair.of("api/v1/products", "GET"),
+                Pair.of("salemanagement/v1/", "GET"),
+                Pair.of("salemanagement/v1/", "POST"),
                 Pair.of("api/v1/categories", "GET"),
                 Pair.of("api/v1/users/register", "POST"),
                 Pair.of("api/v1/users/login", "POST")

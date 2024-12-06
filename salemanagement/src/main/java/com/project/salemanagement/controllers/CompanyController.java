@@ -30,8 +30,8 @@ public class CompanyController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("/assignedPerson/{email}")
-    public ResponseEntity<?> getCompanyByAssignedUser(@PathVariable String email){
+    @GetMapping("/assignedPerson")
+    public ResponseEntity<?> getCompanyByAssignedUser(@RequestParam String email){
         try {
             List<Company> companyList = companyService.getCompanyByAssignEmail(email);
             return ResponseEntity.ok().body(companyList);
