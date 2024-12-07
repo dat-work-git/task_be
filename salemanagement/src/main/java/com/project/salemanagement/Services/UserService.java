@@ -2,10 +2,12 @@ package com.project.salemanagement.Services;
 
 import com.project.salemanagement.Repositories.RoleRepo;
 import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.components.JwtTokenUtil;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.models.Role;
 import com.project.salemanagement.models.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
@@ -16,7 +18,8 @@ import java.util.Optional;
 public class UserService implements IUserService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
-
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
         if (!userRepo.existsByEmail(userDTO.getEmail())) {
@@ -26,23 +29,24 @@ public class UserService implements IUserService {
                 throw new InvalidParameterException("mày không thể tạo acc admin được thằng nhóc à!");
 
             }
-            User user = User.builder().name(userDTO.getFullName())
+            User user = User.builder()
+                    .name(userDTO.getFullName())
                     .email(userDTO.getEmail())
                     .phone(userDTO.getPhone())
                     .address(userDTO.getAddress())
-                    .password(userDTO.getPassword())
                     .role(role)
                     .build();
-            user.setRole(role);
-            /*if(userDTO.getFacebookAccountID() == 0 && userDTO.getGoogleAccountID()==0){
+            //if(userDTO.getFacebookAccountID() == 0 && userDTO.getGoogleAccountID()==0){
                 String password = userDTO.getPassword();
                 String encodedPassword = passwordEncoder.encode(password);
                 user.setPassword(encodedPassword);
-            }*/
+            //}
             userRepo.save(user);
             return user;
         }
-        return null;
+        {
+            throw new IllegalArgumentException("User was create!");
+        }
     }
 
     @Override

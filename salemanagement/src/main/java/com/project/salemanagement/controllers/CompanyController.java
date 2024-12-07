@@ -33,6 +33,7 @@ public class CompanyController {
     @GetMapping("/assignedPerson")
     public ResponseEntity<?> getCompanyByAssignedUser(@RequestParam String email){
         try {
+
             List<Company> companyList = companyService.getCompanyByAssignEmail(email);
             return ResponseEntity.ok().body(companyList);
         } catch (Exception e) {

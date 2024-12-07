@@ -32,7 +32,7 @@ public class CompanyService implements ICompanyService {
         User user = userRepo.findByEmail(AssignEmail)
                 .orElseThrow(() -> new IllegalCallerException("Cannot find email"));
         if (user.getRole().getName().toUpperCase().equals("USER")) {
-            List<Company> companyList = companyRepo.findByAssignedPerson_Email(AssignEmail);
+            List<Company> companyList = companyRepo.findConpanyListByUserAssign(user.getId());
             return companyList;
         }
         if (user.getRole().getName().toUpperCase().equals("ADMIN")) {
