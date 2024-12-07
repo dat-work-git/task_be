@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "tasks")
 @Getter
@@ -28,9 +31,13 @@ public class Task {
     @Column
     private Boolean urgent;
 
-    @ManyToOne
-    @JoinColumn(name = "assigned_user_id")
-    private User assignedUser;
+    @ManyToMany
+    @JoinTable(
+            name = "task_assigned_users",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")  // Tham chiếu bằng user_id
+    )
+    private List<User> assignedUsers;
 
     @Column(name = "start_date")
     private LocalDate startDate;

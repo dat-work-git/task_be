@@ -1,5 +1,4 @@
 package com.project.salemanagement.Services;
-
 import com.project.salemanagement.Repositories.CompanyRepo;
 import com.project.salemanagement.Repositories.StatusRepo;
 import com.project.salemanagement.Repositories.TaskRepo;
@@ -11,9 +10,7 @@ import com.project.salemanagement.models.Task;
 import com.project.salemanagement.models.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.security.InvalidParameterException;
-import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -28,8 +25,12 @@ public class TaskService implements ITasksService {
     public Task createTask(TaskDTO taskDTO) {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Company with id:" + taskDTO.getCompanyId()));
-        User user = userRepo.findByEmail(taskDTO.getAssign())
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find User with id:" + taskDTO.getAssign()));
+//        User user = userRepo.findByEmail(taskDTO.getAssign())
+//                .orElseThrow(() -> new IllegalArgumentException("Cannot find User with id:" + taskDTO.getAssign()));
+        List<User> userList = userRepo.findByEmailIn(taskDTO.getAssign());
+        if (userList.isEmpty()){
+            throw new IllegalArgumentException("User List empty!");
+        }
         Status status = statusRepo.findById(taskDTO.getStatus())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssign()));
         Task task = Task.builder()
@@ -40,7 +41,7 @@ public class TaskService implements ITasksService {
                 .urgent(taskDTO.getUrgent())
                 .startDate(taskDTO.getStartDate())
                 .completedDate(taskDTO.getCompletedDate())
-                .assignedUser(user)
+                .assignedUsers(userList)
                 .status(status)
                 .build();
         taskRepo.save(task);
@@ -66,8 +67,7 @@ public class TaskService implements ITasksService {
     public Task updateTask(long id, TaskDTO taskDTO) {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(()->new InvalidParameterException("Cannot Found Company!"));
-        User user = userRepo.findByEmail(taskDTO.getAssign())
-                .orElseThrow(()->new InvalidParameterException("Cannot Found User"));
+        List<User> userList = userRepo.findByEmailIn(taskDTO.getAssign());
         Task task = taskRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Task "));
         Status status = statusRepo.findById(taskDTO.getStatus())
@@ -76,7 +76,7 @@ public class TaskService implements ITasksService {
         task.setCompany(company);
         task.setUrgent(taskDTO.getUrgent());
         task.setStatus(status);
-        task.setAssignedUser(user);
+        task.setAssignedUsers(userList);
         taskRepo.save(task);
         return task;
     }

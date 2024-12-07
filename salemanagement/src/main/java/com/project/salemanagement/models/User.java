@@ -24,7 +24,7 @@ public class User implements UserDetails {
     Long id;
     @Column(name="fullname",nullable = false)
     private String name;
-    @Column(name="email",nullable = false)
+    @Column(name="email",unique = true,nullable = false)
     private String email;
     @Column(name="phone",nullable = false)
     private String phone;

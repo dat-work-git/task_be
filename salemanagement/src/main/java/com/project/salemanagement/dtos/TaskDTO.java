@@ -3,6 +3,7 @@ package com.project.salemanagement.dtos;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Getter
@@ -14,7 +15,7 @@ public class TaskDTO {
     private String description;
     private String action;
     private Boolean urgent;
-    private String assign;
+    private List<String> assign;
     private Long status;
     private LocalDate startDate;
     private LocalDate completedDate;
