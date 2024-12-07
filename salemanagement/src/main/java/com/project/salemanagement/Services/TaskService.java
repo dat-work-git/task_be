@@ -25,8 +25,7 @@ public class TaskService implements ITasksService {
     public Task createTask(TaskDTO taskDTO) {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Company with id:" + taskDTO.getCompanyId()));
-//        User user = userRepo.findByEmail(taskDTO.getAssign())
-//                .orElseThrow(() -> new IllegalArgumentException("Cannot find User with id:" + taskDTO.getAssign()));
+        // danh sach user
         List<User> userList = userRepo.findByEmailIn(taskDTO.getAssign());
         if (userList.isEmpty()){
             throw new IllegalArgumentException("User List empty!");
