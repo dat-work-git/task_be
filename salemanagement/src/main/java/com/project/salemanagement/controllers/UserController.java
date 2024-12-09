@@ -45,25 +45,28 @@ public class UserController {
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginDTO userLoginDTO, BindingResult result, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginDTO userLoginDTO,
+                                       BindingResult result,
+                                       HttpServletRequest httpServletRequest) {
         try {
-            String token = userService.login(userLoginDTO.getEmail(), userLoginDTO.getPassword(), userLoginDTO.getRoleId());
-            //return ResponseEntity.ok(Map.of("status", "success", "token", token));
-            //Locale locale = RequestContextUtils.getLocale(httpServletRequest);
+            String token = userService.login(userLoginDTO.getEmail(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getRoleId());
             return ResponseEntity.ok(
 //                    LoginResponse.builder()
-//                    .message(localizationUtils.getLocalizationMessages(MessageKey.LOGIN_SUCCESSFULLY))
+//                    .message("Login Successfully!")
 //                    .token(token)
 //                    .build()
-                    "Sucessfully!"
+                    token
             );
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(
-//                    LoginResponse.builder()
-//                    .message(localizationUtils.getLocalizationMessages(MessageKey.LOGIN_FAILED, e.getMessage()))
-//                    .build()
-                    e.getMessage()
-            );
+//            return ResponseEntity.badRequest().body(
+////                    LoginResponse.builder()
+////                    .message(localizationUtils.getLocalizationMessages(MessageKey.LOGIN_FAILED, e.getMessage()))
+////                    .build()
+//
+//            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             //.status(HttpStatus.BAD_REQUEST)
         }
     }

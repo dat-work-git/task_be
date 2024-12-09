@@ -31,8 +31,8 @@ public class TaskController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("/{taskId}") // lấy danh sách order của user theo id
-    public ResponseEntity<?> getTaskById(@Valid @PathVariable("taskId") long taskId) {
+    @GetMapping("/taskId") // lấy danh sách order của user theo id
+    public ResponseEntity<?> getTaskById(@Valid @RequestParam("taskId") long taskId) {
         try {
             Task task = taskService.getTask(taskId);
             return ResponseEntity.ok().body(task);

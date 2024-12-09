@@ -7,6 +7,8 @@ import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.models.Role;
 import com.project.salemanagement.models.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +22,17 @@ public class UserService implements IUserService {
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
+    private final AuthenticationManager authenticationManager;
+
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
         if (!userRepo.existsByEmail(userDTO.getEmail())) {
             Role role = roleRepo.findById(userDTO.getRoleId()).orElseThrow(
                     () -> new IllegalArgumentException("không tìm thấy role"));
-            if (role.getName().equals(Role.ADMIN)) {
-                throw new InvalidParameterException("mày không thể tạo acc admin được thằng nhóc à!");
-
-            }
+//            if (role.getName().equals(Role.ADMIN)) {
+//                throw new InvalidParameterException("mày không thể tạo acc admin được thằng nhóc à!");
+//
+//            }
             User user = User.builder()
                     .name(userDTO.getFullName())
                     .email(userDTO.getEmail())
@@ -37,9 +41,9 @@ public class UserService implements IUserService {
                     .role(role)
                     .build();
             //if(userDTO.getFacebookAccountID() == 0 && userDTO.getGoogleAccountID()==0){
-                String password = userDTO.getPassword();
-                String encodedPassword = passwordEncoder.encode(password);
-                user.setPassword(encodedPassword);
+            String password = userDTO.getPassword();
+            String encodedPassword = passwordEncoder.encode(password);
+            user.setPassword(encodedPassword);
             //}
             userRepo.save(user);
             return user;
@@ -56,14 +60,16 @@ public class UserService implements IUserService {
             throw new IllegalArgumentException("Invalid phone number/password");
         }
         User user = userOptional.get();
-        if (!user.getEmail().equals(email) ||
-                !user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid phone number/password");
         }
         if (user.getRole().getId() != RoleId) {
             throw new IllegalArgumentException("Wrong Role!");
         }
-        return "Sucessfully!";
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(email, password, user.getAuthorities());
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        return jwtTokenUtil.generateToken(user);
     }
 
     @Override
