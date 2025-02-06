@@ -26,12 +26,12 @@ public class TaskService implements ITasksService {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Company with id:" + taskDTO.getCompanyId()));
         // danh sach user
-        List<User> userList = userRepo.findByEmailIn(taskDTO.getAssign());
+        List<User> userList = userRepo.findByEmailIn(taskDTO.getAssignedUsers());
         if (userList.isEmpty()){
             throw new IllegalArgumentException("User List empty!");
         }
         Status status = statusRepo.findById(taskDTO.getStatus())
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssign()));
+                .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
         Task task = Task.builder()
                 .title(taskDTO.getTitle())
                 .description(taskDTO.getDescription())
@@ -66,11 +66,12 @@ public class TaskService implements ITasksService {
     public Task updateTask(long id, TaskDTO taskDTO) {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(()->new InvalidParameterException("Cannot Found Company!"));
-        List<User> userList = userRepo.findByEmailIn(taskDTO.getAssign());
+        List<User> userList = userRepo.findByEmailIn(taskDTO.getAssignedUsers());
         Task task = taskRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Task "));
         Status status = statusRepo.findById(taskDTO.getStatus())
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssign()));
+                .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
+        task.setTitle(taskDTO.getTitle());
         task.setAction(taskDTO.getAction());
         task.setCompany(company);
         task.setUrgent(taskDTO.getUrgent());

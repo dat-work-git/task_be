@@ -4,16 +4,15 @@ import com.project.salemanagement.Services.UserService;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.dtos.UserLoginDTO;
 import com.project.salemanagement.models.User;
+import com.project.salemanagement.response.LoginResponse;
+import com.project.salemanagement.response.UserResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,21 +52,30 @@ public class UserController {
                     userLoginDTO.getPassword(),
                     userLoginDTO.getRoleId());
             return ResponseEntity.ok(
-//                    LoginResponse.builder()
-//                    .message("Login Successfully!")
-//                    .token(token)
-//                    .build()
-                    token
+                    LoginResponse.builder()
+                    .message("Login Successfully!")
+                    .token(token)
+                    .build()
             );
         } catch (Exception e) {
-//            return ResponseEntity.badRequest().body(
-////                    LoginResponse.builder()
-////                    .message(localizationUtils.getLocalizationMessages(MessageKey.LOGIN_FAILED, e.getMessage()))
-////                    .build()
-//
-//            );
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-            //.status(HttpStatus.BAD_REQUEST)
+            return ResponseEntity.badRequest().body(
+                    LoginResponse.builder()
+                    .message("Login Fail!")
+                    .build()
+
+            );
+
+
+        }
+    }
+    @GetMapping("/all")
+    public ResponseEntity<?> getTasksByCompanyId() {
+        try {
+            List<User> userList = userService.getUserList();
+            List<UserResponse> userResponse = UserResponse.fromUser(userList);
+            return ResponseEntity.ok().body(userResponse);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

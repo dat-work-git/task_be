@@ -22,7 +22,8 @@ public class TaskController {
     public ResponseEntity<?> createNew(@Valid @RequestBody TaskDTO taskDTO, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                List<String> error = result.getFieldErrors().stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
+                List<String> error = result.getFieldErrors().stream()
+                        .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
             }
             Task task = taskService.createTask(taskDTO);
@@ -45,6 +46,25 @@ public class TaskController {
         try {
             List<Task> task = taskService.taskByCompanyId(companyId);
             return ResponseEntity.ok().body(task);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping("/taskId")
+    public ResponseEntity<?> deleteTask ( @RequestParam long taskId ){
+        return null;
+    }
+
+    @PutMapping("/{taskId}")
+    public ResponseEntity<?> updateTask(@Valid @RequestBody TaskDTO taskDTO,@PathVariable long taskId, BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                List<String> error = result.getFieldErrors().stream()
+                        .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            }
+            Task task = taskService.updateTask(taskId,taskDTO);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(task);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

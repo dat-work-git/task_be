@@ -12,7 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.InvalidParameterException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,6 +70,21 @@ public class UserService implements IUserService {
                 new UsernamePasswordAuthenticationToken(email, password, user.getAuthorities());
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         return jwtTokenUtil.generateToken(user);
+    }
+
+    @Override
+    public List<User> getUserList() {
+
+            try {
+                List<User> userList = userRepo.findAll();
+                if (!userList.isEmpty()) {
+                    return  userRepo.findAll();
+                }else {
+                    throw new RuntimeException("User list empty!");
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
