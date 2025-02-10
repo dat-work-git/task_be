@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("salemanagement/v1/tasks")
 public class TaskController {
     private final TaskService taskService;
-    @PostMapping("")
+    @PostMapping("/createTask")
     public ResponseEntity<?> createNew(@Valid @RequestBody TaskDTO taskDTO, BindingResult result) {
         try {
             if (result.hasErrors()) {
@@ -26,8 +26,8 @@ public class TaskController {
                         .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
             }
-            Task task = taskService.createTask(taskDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(task);
+            List<Task> taskList = taskService.createTask(taskDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(taskList);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -50,10 +50,14 @@ public class TaskController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @DeleteMapping("/taskId")
-    public ResponseEntity<?> deleteTask ( @RequestParam long taskId ){
-        return null;
-    }
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<?> deleteTask ( @PathVariable long taskId ){
+        try {
+            long taskIdDelete = taskService.deleteTask(taskId);
+            return ResponseEntity.ok().body(taskIdDelete);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }    }
 
     @PutMapping("/{taskId}")
     public ResponseEntity<?> updateTask(@Valid @RequestBody TaskDTO taskDTO,@PathVariable long taskId, BindingResult result) {

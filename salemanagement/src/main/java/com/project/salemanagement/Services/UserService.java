@@ -6,6 +6,8 @@ import com.project.salemanagement.components.JwtTokenUtil;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.models.Role;
 import com.project.salemanagement.models.User;
+import com.project.salemanagement.response.UserResponse;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,14 +58,16 @@ public class UserService implements IUserService {
     @Override
     public String login(String email, String password, Long RoleId) {
         Optional<User> userOptional = userRepo.findByEmail(email);
-        if (userOptional.isEmpty()) {
+        if (userOptional.isEmpty()){
             throw new IllegalArgumentException("Invalid phone number/password");
+        }else {
+            System.out.println("Have User");
         }
         User user = userOptional.get();
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())){
             throw new IllegalArgumentException("Invalid phone number/password");
         }
-        if (user.getRole().getId() != RoleId) {
+        if (user.getRole().getId() != RoleId){
             throw new IllegalArgumentException("Wrong Role!");
         }
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -77,7 +81,7 @@ public class UserService implements IUserService {
 
             try {
                 List<User> userList = userRepo.findAll();
-                if (!userList.isEmpty()) {
+                if (!userList.isEmpty()){
                     return  userRepo.findAll();
                 }else {
                     throw new RuntimeException("User list empty!");
@@ -91,4 +95,15 @@ public class UserService implements IUserService {
     public Long deleteUser(Long id) {
         return 0L;
     }
+
+    @Override
+    public User getUserDetails(String token) throws Exception {
+        if(jwtTokenUtil.isTokenExpired(token)){
+            throw new Exception("Token is expired");
+        }
+        String email = jwtTokenUtil.extractEmail(token);
+        User user = userRepo.findByEmail(email).orElseThrow(
+                () ->  new EntityNotFoundException("Cannot find user"));
+        return user;    }
+
 }

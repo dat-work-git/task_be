@@ -8,8 +8,11 @@ import com.project.salemanagement.models.Company;
 import com.project.salemanagement.models.Status;
 import com.project.salemanagement.models.Task;
 import com.project.salemanagement.models.User;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -21,8 +24,9 @@ public class TaskService implements ITasksService {
     private final TaskRepo taskRepo;
     private final StatusRepo statusRepo;
 
+    @Transactional
     @Override
-    public Task createTask(TaskDTO taskDTO) {
+    public List<Task> createTask(TaskDTO taskDTO) {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Company with id:" + taskDTO.getCompanyId()));
         // danh sach user
@@ -30,7 +34,8 @@ public class TaskService implements ITasksService {
         if (userList.isEmpty()){
             throw new IllegalArgumentException("User List empty!");
         }
-        Status status = statusRepo.findById(taskDTO.getStatus())
+        Long statusId = taskDTO.getStatus().get(0);
+        Status status = statusRepo.findById(statusId)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
         Task task = Task.builder()
                 .title(taskDTO.getTitle())
@@ -44,7 +49,8 @@ public class TaskService implements ITasksService {
                 .status(status)
                 .build();
         taskRepo.save(task);
-        return task;
+        List<Task> taskList = taskByCompanyId(taskDTO.getCompanyId());
+        return taskList;
     }
 
     @Override
@@ -69,7 +75,7 @@ public class TaskService implements ITasksService {
         List<User> userList = userRepo.findByEmailIn(taskDTO.getAssignedUsers());
         Task task = taskRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Task "));
-        Status status = statusRepo.findById(taskDTO.getStatus())
+        Status status = statusRepo.findById(taskDTO.getStatus().get(0))
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
         task.setTitle(taskDTO.getTitle());
         task.setAction(taskDTO.getAction());
@@ -81,9 +87,12 @@ public class TaskService implements ITasksService {
         return task;
     }
 
+    @Transactional
     @Override
-    public void deleteTask(long id) {
-
+    public Long deleteTask(long id) {
+    Task task = taskRepo.findById(id).orElseThrow(()->new EntityNotFoundException("Task Not Found!"));
+    taskRepo.delete(task);
+    return id;
     }
 
     @Override

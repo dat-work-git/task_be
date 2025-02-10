@@ -72,11 +72,20 @@ public class UserController {
     public ResponseEntity<?> getTasksByCompanyId() {
         try {
             List<User> userList = userService.getUserList();
-            List<UserResponse> userResponse = UserResponse.fromUser(userList);
+            List<UserResponse> userResponse = UserResponse.fromListUser(userList);
             return ResponseEntity.ok().body(userResponse);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @GetMapping("/details")
+    public ResponseEntity<?> getUserDetails(@RequestHeader("Authorization") String token) {
+        try {
+            token = token.substring(7);
+            User user = userService.getUserDetails(token.toString());
+            return ResponseEntity.ok(UserResponse.fromUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }
