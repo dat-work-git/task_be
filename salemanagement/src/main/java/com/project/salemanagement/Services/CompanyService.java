@@ -75,8 +75,18 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Company getCompany(Long id) {
-        Company company = companyRepo.findById(id).orElseThrow(() -> new IllegalCallerException("Can not find company"));
+    public Company getCompany(Long CompanyId) {
+        Company company = companyRepo.findById(CompanyId)
+                .orElseThrow(() -> new IllegalCallerException("Can not find company"));
         return company;
+    }
+
+    @Override
+    public List<Company> deleteCompany(Long CompanyId) {
+        Company company = companyRepo.findById(CompanyId)
+                .orElseThrow(() -> new IllegalCallerException("Can not find company"));
+        companyRepo.delete(company);
+        List<Company> companyList = getAllCompany();
+        return companyList;
     }
 }

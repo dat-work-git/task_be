@@ -11,4 +11,5 @@ public interface ICompanyService {
     Company createCompany(CompanyDTO companyDTO);
     Company updateCompany(Long id,CompanyDTO companyDTO);
     Company getCompany (Long id);
+    List<Company> deleteCompany( Long CompanyId);
 }
