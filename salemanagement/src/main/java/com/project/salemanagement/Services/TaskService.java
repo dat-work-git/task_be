@@ -34,7 +34,7 @@ public class TaskService implements ITasksService {
         if (userList.isEmpty()){
             throw new IllegalArgumentException("User List empty!");
         }
-        Long statusId = taskDTO.getStatus().get(0);
+        Long statusId = taskDTO.getStatus();
         Status status = statusRepo.findById(statusId)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
         Task task = Task.builder()
@@ -75,7 +75,7 @@ public class TaskService implements ITasksService {
         List<User> userList = userRepo.findByEmailIn(taskDTO.getAssignedUsers());
         Task task = taskRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Task "));
-        Status status = statusRepo.findById(taskDTO.getStatus().get(0))
+        Status status = statusRepo.findById(taskDTO.getStatus())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
         task.setTitle(taskDTO.getTitle());
         task.setAction(taskDTO.getAction());

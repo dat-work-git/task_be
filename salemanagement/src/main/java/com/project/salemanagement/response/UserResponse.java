@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -22,12 +23,20 @@ public class UserResponse {
     private String address;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Role role;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long is_active;
+
+
     public static List<UserResponse> fromListUser(List<User> userList){
         List<UserResponse> userResponseList = new ArrayList<>();
         for (User user : userList){
         UserResponse userResponse = UserResponse.builder()
                 .name(user.getName())
                 .email(user.getEmail())
+                .phone(user.getPhone())
+                .address(user.getAddress())
+                .role(user.getRole())
+                .is_active(Long.valueOf(user.getIs_active()))
                 .build();
         userResponseList.add(userResponse);
         }

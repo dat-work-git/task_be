@@ -1,7 +1,10 @@
 package com.project.salemanagement.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Date;
 
 @Entity
 @Table(name="company")
@@ -24,6 +27,9 @@ public class Company {
     @ManyToOne
     @JoinColumn(name = "assigned_person", referencedColumnName = "email", nullable = false)
     private User assignedPerson;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    private Date created_at;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    private Date updated_at;
 
 }
