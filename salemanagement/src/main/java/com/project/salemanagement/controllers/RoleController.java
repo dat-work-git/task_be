@@ -6,6 +6,7 @@ import com.project.salemanagement.dtos.RoleDTO;
 import com.project.salemanagement.models.Role;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("salemanagement/v1/role")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RoleController {
     private final RoleService roleService;
     @PostMapping("")

@@ -3,6 +3,7 @@ package com.project.salemanagement.Services;
 import com.project.salemanagement.Repositories.RoleRepo;
 import com.project.salemanagement.Repositories.UserRepo;
 import com.project.salemanagement.components.JwtTokenUtil;
+import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.models.Role;
 import com.project.salemanagement.models.User;
@@ -103,7 +104,27 @@ public class UserService implements IUserService {
         }
         String email = jwtTokenUtil.extractEmail(token);
         User user = userRepo.findByEmail(email).orElseThrow(
-                () ->  new EntityNotFoundException("Cannot find user"));
+                () ->  new EntityNotFoundException("User not found"));
         return user;    }
+
+    @Override
+    public User changePassword(UserChangePassDTO userChangePassDTO, String token) throws Exception {
+        if(!userChangePassDTO.getRetypePassword().equals( userChangePassDTO.getNewPassword())){
+            throw new Exception("Retype is not valid!");
+        }
+        if(jwtTokenUtil.isTokenExpired(token)){
+            throw new Exception("Token is expired");
+        }
+        String email = jwtTokenUtil.extractEmail(token);
+        User user = userRepo.findByEmail(email).orElseThrow(
+                () ->  new EntityNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(userChangePassDTO.getOldPassword(), user.getPassword())){
+            throw new Exception("Current password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(userChangePassDTO.getNewPassword()));
+        userRepo.save(user);
+        return user;
+    }
 
 }

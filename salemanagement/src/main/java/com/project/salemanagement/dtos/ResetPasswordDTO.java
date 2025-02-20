@@ -1,16 +1,16 @@
 package com.project.salemanagement.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class CompanyDTO {
-    @NotEmpty(message = "Customer Name can not be empty!")
-    private String companyName;
+public class ResetPasswordDTO {
     @NotEmpty(message = "Email can not be empty!")
     private  String email;
-    private  String phone;
-    private  String assigned_person;
 }

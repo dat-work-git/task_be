@@ -1,5 +1,6 @@
 package com.project.salemanagement.Services;
 
+import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.models.User;
 import com.project.salemanagement.response.UserResponse;
@@ -12,4 +13,6 @@ public interface IUserService {
     List<User> getUserList() ;
     Long deleteUser(Long id);
     User getUserDetails(String token) throws Exception;
+    User changePassword(UserChangePassDTO userChangePassDTO, String token) throws Exception;
+
 }

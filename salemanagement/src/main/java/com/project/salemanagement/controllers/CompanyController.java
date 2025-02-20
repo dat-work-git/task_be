@@ -6,6 +6,7 @@ import com.project.salemanagement.models.Company;
 import com.project.salemanagement.response.CompanyResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("salemanagement/v1/company")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CompanyController {
     private final CompanyService companyService;
     @GetMapping("/admin")

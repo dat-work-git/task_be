@@ -17,7 +17,6 @@ public class UserDTO {
     @NotBlank(message = "Email can not be empty!")
     private  String email;
     private String phone;
-    @NotBlank(message = "Address can not be empty!")
     private String address;
     @NotBlank(message = "Password can not be empty!")
     private String password;

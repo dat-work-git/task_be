@@ -1,6 +1,7 @@
 package com.project.salemanagement.controllers;
 
 import com.project.salemanagement.Services.UserService;
+import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.dtos.UserLoginDTO;
 import com.project.salemanagement.models.User;
@@ -9,6 +10,7 @@ import com.project.salemanagement.response.UserResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("salemanagement/v1/user")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
     private UserService userService;
     @PostMapping("/register")
@@ -53,15 +55,15 @@ public class UserController {
                     userLoginDTO.getRoleId());
             return ResponseEntity.ok(
                     LoginResponse.builder()
-                    .message("Login Successfully!")
-                    .token(token)
-                    .build()
+                            .message("Login Successfully!")
+                            .token(token)
+                            .build()
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     LoginResponse.builder()
-                    .message("Login Fail!")
-                    .build()
+                            .message("Login Fail!")
+                            .build()
 
             );
 
@@ -83,6 +85,20 @@ public class UserController {
         try {
             token = token.substring(7);
             User user = userService.getUserDetails(token.toString());
+            return ResponseEntity.ok(UserResponse.fromUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody UserChangePassDTO userChangePassDTO,@RequestHeader("Authorization") String token, BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors().stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
+                return ResponseEntity.badRequest().body(errorMessages);
+            }
+            token = token.substring(7);
+            User user = userService.changePassword(userChangePassDTO,token);
             return ResponseEntity.ok(UserResponse.fromUser(user));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

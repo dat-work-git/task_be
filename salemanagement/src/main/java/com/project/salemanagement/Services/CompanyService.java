@@ -1,5 +1,4 @@
 package com.project.salemanagement.Services;
-
 import com.project.salemanagement.Repositories.CompanyRepo;
 import com.project.salemanagement.Repositories.UserRepo;
 import com.project.salemanagement.dtos.CompanyDTO;
@@ -7,7 +6,6 @@ import com.project.salemanagement.models.Company;
 import com.project.salemanagement.models.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.security.InvalidParameterException;
 import java.util.List;
 

@@ -36,7 +36,7 @@ public class UserResponse {
                 .phone(user.getPhone())
                 .address(user.getAddress())
                 .role(user.getRole())
-                .is_active(Long.valueOf(user.getIs_active()))
+                .is_active( user.getIs_active() != null ? Long.valueOf(user.getIs_active()):1)
                 .build();
         userResponseList.add(userResponse);
         }

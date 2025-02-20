@@ -74,7 +74,7 @@ public class TaskService implements ITasksService {
                 .orElseThrow(()->new InvalidParameterException("Cannot Found Company!"));
         List<User> userList = userRepo.findByEmailIn(taskDTO.getAssignedUsers());
         Task task = taskRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find Task "));
+                .orElseThrow(() -> new IllegalArgumentException("Cannot find Task"));
         Status status = statusRepo.findById(taskDTO.getStatus())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
         task.setTitle(taskDTO.getTitle());
