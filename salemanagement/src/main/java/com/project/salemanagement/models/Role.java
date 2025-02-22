@@ -15,19 +15,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class Role extends BaseModel{
+
     @Column(name="name",nullable = false)
     private String name;
     @Column(name="description",nullable = true)
     private String description;
     public static String ADMIN = "ADMIN";
     public static String USER = "USER";
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
-    private Date created_at;
-    @UpdateTimestamp
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
-    private Date updated_at;
 }

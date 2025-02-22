@@ -79,7 +79,6 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> getUserList() {
-
             try {
                 List<User> userList = userRepo.findAll();
                 if (!userList.isEmpty()){
