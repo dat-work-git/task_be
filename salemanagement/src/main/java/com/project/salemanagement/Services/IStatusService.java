@@ -9,4 +9,5 @@ public interface IStatusService {
     List<Status> statusList();
     Status createStatus (StatusDTO statusDTO);
     Status deleteStatus (long id);
+    Status updateStatus(StatusDTO statusDTO, long id) throws Exception;
 }

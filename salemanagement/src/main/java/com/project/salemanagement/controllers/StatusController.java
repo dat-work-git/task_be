@@ -36,5 +36,13 @@ public class StatusController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @PutMapping("/{statusId}")
+    public ResponseEntity<?> updateStatus(@Valid @RequestBody StatusDTO statusDTO, @PathVariable Long statusId){
+        try {
+            Status status = statusService.updateStatus(statusDTO,statusId);
+            return ResponseEntity.ok().body(status);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
