@@ -3,13 +3,13 @@ package com.project.salemanagement.controllers;
 import com.project.salemanagement.Services.UserService;
 import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
+import com.project.salemanagement.dtos.UserUpdateDTO;
 import com.project.salemanagement.dtos.UserLoginDTO;
 import com.project.salemanagement.models.User;
 import com.project.salemanagement.response.LoginResponse;
 import com.project.salemanagement.response.UserResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,6 +99,21 @@ public class UserController {
             }
             token = token.substring(7);
             User user = userService.changePassword(userChangePassDTO,token);
+            return ResponseEntity.ok(UserResponse.fromUser(user));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+    @PutMapping("/{userEmail}")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO,
+                                        @PathVariable String userEmail,
+                                        BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors().stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
+                return ResponseEntity.badRequest().body(errorMessages);
+            }
+            User user = userService.updateUser(userUpdateDTO,userEmail);
             return ResponseEntity.ok(UserResponse.fromUser(user));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

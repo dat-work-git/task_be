@@ -5,6 +5,7 @@ import com.project.salemanagement.Repositories.UserRepo;
 import com.project.salemanagement.components.JwtTokenUtil;
 import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
+import com.project.salemanagement.dtos.UserUpdateDTO;
 import com.project.salemanagement.models.Role;
 import com.project.salemanagement.models.User;
 import com.project.salemanagement.response.UserResponse;
@@ -75,6 +76,27 @@ public class UserService implements IUserService {
                 new UsernamePasswordAuthenticationToken(email, password, user.getAuthorities());
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         return jwtTokenUtil.generateToken(user);
+    }
+
+    @Override
+    public User updateUser(UserUpdateDTO userUpdateDTO, String userEmail) throws Exception {
+        User user = userRepo.findByEmail(userEmail)
+                .orElseThrow(()-> new EntityNotFoundException("Cannot find user!!!"));
+        Role role = roleRepo.findById(userUpdateDTO.getRoleId())
+                .orElseThrow(()-> new EntityNotFoundException("Cannot find Role!!!"));
+        Long userId = user.getId();
+        user = User.builder()
+                .name(userUpdateDTO.getFullName())
+                .email(user.getEmail())
+                .phone(userUpdateDTO.getPhone())
+                .address(userUpdateDTO.getAddress())
+                .is_active(String.valueOf(userUpdateDTO.getIs_active()))
+                .password(user.getPassword())
+                .role(role)
+                .build();
+        user.setId(userId);
+        userRepo.save(user);
+        return user;
     }
 
     @Override
