@@ -13,8 +13,7 @@ public interface IUserService {
     String login(String phone, String password, Long RoleId);
     User updateUser(UserUpdateDTO userUpdateDTO, String userEmail)throws Exception;
     List<User> getUserList() ;
-    Long deleteUser(Long id);
     User getUserDetails(String token) throws Exception;
     User changePassword(UserChangePassDTO userChangePassDTO, String token) throws Exception;
-
+    Boolean deleteUser( String userEmail) throws Exception;
 }

@@ -22,6 +22,7 @@ public class StatusService implements IStatusService{
     public Status createStatus(StatusDTO statusDTO) {
         Status status = Status.builder()
                 .name(statusDTO.getName())
+                .color(statusDTO.getColor())
                 .build();
         statusRepo.save(status);
         return status;
@@ -37,6 +38,7 @@ public class StatusService implements IStatusService{
         Status status = statusRepo.findById(statusId).
                 orElseThrow(()-> new EntityNotFoundException("Cannot find Status"));
         status.setName(statusDTO.getName());
+        status.setColor(statusDTO.getColor());
         statusRepo.save(status);
         return status;
     }

@@ -20,7 +20,7 @@ public class Status {
 
     @Column(nullable = false)
     private String name;
-
+    private String color;
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
 //    private Date created_at;
 //

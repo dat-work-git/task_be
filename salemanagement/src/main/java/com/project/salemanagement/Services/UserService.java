@@ -1,11 +1,13 @@
 package com.project.salemanagement.Services;
 
+import com.project.salemanagement.Repositories.CompanyRepo;
 import com.project.salemanagement.Repositories.RoleRepo;
 import com.project.salemanagement.Repositories.UserRepo;
 import com.project.salemanagement.components.JwtTokenUtil;
 import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.dtos.UserUpdateDTO;
+import com.project.salemanagement.models.Company;
 import com.project.salemanagement.models.Role;
 import com.project.salemanagement.models.User;
 import com.project.salemanagement.response.UserResponse;
@@ -18,12 +20,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
+    private final CompanyRepo companyRepo;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
@@ -113,10 +117,6 @@ public class UserService implements IUserService {
         }
     }
 
-    @Override
-    public Long deleteUser(Long id) {
-        return 0L;
-    }
 
     @Override
     public User getUserDetails(String token) throws Exception {
@@ -146,6 +146,21 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(userChangePassDTO.getNewPassword()));
         userRepo.save(user);
         return user;
+    }
+
+    @Override
+    public Boolean deleteUser(String userEmail) throws Exception {
+        User user = userRepo.findByEmail(userEmail)
+                .orElseThrow(()->new EntityNotFoundException("Cannot find user"));
+        String companyList = companyRepo.findByAssignedPerson_Email(userEmail)
+                .stream().map(Company::getCompanyName)
+                .collect(Collectors.joining(", "));
+
+        if(!companyList.isEmpty()){
+            throw new Exception("Cannot delete User. User assgin in: " +companyList );
+        }
+        userRepo.delete(user);
+        return true;
     }
 
 }

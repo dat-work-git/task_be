@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
         try {
@@ -45,6 +46,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginDTO userLoginDTO,
                                        BindingResult result,
@@ -70,6 +72,7 @@ public class UserController {
 
         }
     }
+
     @GetMapping("/all")
     public ResponseEntity<?> getTasksByCompanyId() {
         try {
@@ -80,6 +83,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @GetMapping("/details")
     public ResponseEntity<?> getUserDetails(@RequestHeader("Authorization") String token) {
         try {
@@ -90,20 +94,22 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
     @PutMapping("/changePassword")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody UserChangePassDTO userChangePassDTO,@RequestHeader("Authorization") String token, BindingResult result) {
+    public ResponseEntity<?> changePassword(@Valid @RequestBody UserChangePassDTO userChangePassDTO, @RequestHeader("Authorization") String token, BindingResult result) {
         try {
             if (result.hasErrors()) {
                 List<String> errorMessages = result.getFieldErrors().stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
             token = token.substring(7);
-            User user = userService.changePassword(userChangePassDTO,token);
+            User user = userService.changePassword(userChangePassDTO, token);
             return ResponseEntity.ok(UserResponse.fromUser(user));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
     @PutMapping("/{userEmail}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO,
                                         @PathVariable String userEmail,
@@ -113,10 +119,27 @@ public class UserController {
                 List<String> errorMessages = result.getFieldErrors().stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            User user = userService.updateUser(userUpdateDTO,userEmail);
+            User user = userService.updateUser(userUpdateDTO, userEmail);
             return ResponseEntity.ok(UserResponse.fromUser(user));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{userEmail}")
+    public ResponseEntity<?> deleteUser( @PathVariable String userEmail) {
+        try {
+            if(userEmail == null || userEmail.trim().isEmpty()){
+                return ResponseEntity.badRequest().body("User email cannot be null r empty!");
+            }
+            Boolean deleteUser = userService.deleteUser(userEmail);
+            if (deleteUser) {
+                return ResponseEntity.ok().body("Delete Successfully!");
+            } else {
+                return ResponseEntity.ok().body("Delete UnSuccessfully!");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
