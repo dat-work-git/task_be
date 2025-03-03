@@ -17,6 +17,7 @@ import java.util.UUID;
 public class ResetPasswordService implements IResetPasswordService{
     private final UserRepo userRepo;
     private final ResetPasswordRepo resetPasswordRepo;
+    private final SendEmail sendEmail;
     @Override
     public ResetPassword createOtp(ResetPasswordDTO resetPasswordDTO) throws Exception {
         User user = userRepo.findByEmail(resetPasswordDTO.getEmail())
@@ -32,6 +33,11 @@ public class ResetPasswordService implements IResetPasswordService{
                 .expireTime(Instant.now().plus(75, ChronoUnit.SECONDS))
                 .build();
         resetPasswordRepo.save(resetPasswordOTP);
+        sendEmail.sendEmail(resetPasswordOTP.getEmail(),
+                "Task Management Reset Password",
+                "OTP: "+otp,
+                null
+                );
         return resetPasswordOTP;
     }
 
