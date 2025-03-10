@@ -27,7 +27,7 @@ public class SendEmail implements ISendEmail {
                             MultipartFile[] files) throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setFrom(emailFrom, "SAlE MANAGEMENT");
+        helper.setFrom(emailFrom, "SALE MANAGEMENT");
         if (recipient.contains(",")) {
             helper.setTo(InternetAddress.parse(recipient));
         } else {

@@ -62,19 +62,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public String login(String email, String password, Long RoleId) {
+    public String login(String email, String password, Long RoleId) throws Exception {
         Optional<User> userOptional = userRepo.findByEmail(email);
         if (userOptional.isEmpty()){
-            throw new IllegalArgumentException("Invalid phone number/password");
+            throw new Exception("Invalid phone number/password");
         }else {
             System.out.println("Have User");
         }
         User user = userOptional.get();
         if (!passwordEncoder.matches(password, user.getPassword())){
-            throw new IllegalArgumentException("Invalid phone number/password");
+            throw new Exception("Invalid phone number/password");
         }
         if (user.getRole().getId() != RoleId){
-            throw new IllegalArgumentException("Wrong Role!");
+            throw new Exception("Wrong Role!");
         }
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password, user.getAuthorities());

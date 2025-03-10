@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IUserService {
     User createUser (UserDTO userDTO) throws Exception ;
-    String login(String phone, String password, Long RoleId);
+    String login(String phone, String password, Long RoleId) throws Exception;
     User updateUser(UserUpdateDTO userUpdateDTO, String userEmail)throws Exception;
     List<User> getUserList() ;
     User getUserDetails(String token) throws Exception;

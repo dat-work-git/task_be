@@ -44,21 +44,21 @@ public class WebSecurityConfig {
                     // products
                     .anyRequest().authenticated();
                 });
-        http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
-            @Override
-            public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
-                CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("*")); // URL nguồn gốc được phép
-                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // Phương thức được phép
-                configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "x-auth-token")); // Header được phép
-                configuration.setExposedHeaders(List.of("x-auth-token")); // Header được hiển thị trong response
-                //configuration.setAllowCredentials(true); // Cho phép cookie
-
-                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-                source.registerCorsConfiguration("/**", configuration); // Áp dụng cấu hình cho tất cả endpoint
-                httpSecurityCorsConfigurer.configurationSource(source); // Đăng ký cấu hình
-            }
-        });
+//        http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
+//            @Override
+//            public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
+//                CorsConfiguration configuration = new CorsConfiguration();
+//                configuration.setAllowedOrigins(List.of("*")); // URL nguồn gốc được phép
+//                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // Phương thức được phép
+//                configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "x-auth-token")); // Header được phép
+//                configuration.setExposedHeaders(List.of("x-auth-token")); // Header được hiển thị trong response
+//                //configuration.setAllowCredentials(true); // Cho phép cookie
+//
+//                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//                source.registerCorsConfiguration("/**", configuration); // Áp dụng cấu hình cho tất cả endpoint
+//                httpSecurityCorsConfigurer.configurationSource(source); // Đăng ký cấu hình
+//            }
+//        });
         return http.build();
 
     }
