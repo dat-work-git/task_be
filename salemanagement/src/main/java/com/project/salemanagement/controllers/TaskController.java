@@ -41,6 +41,15 @@ public class TaskController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @GetMapping("/admin/list-task") // lấy danh sách order của user theo id
+    public ResponseEntity<?> getTaskByAdmin(@Valid @RequestParam("taskId") long taskId) {
+        try {
+            Task task = taskService.getTask(taskId);
+            return ResponseEntity.ok().body(task);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @GetMapping("/company")
     public ResponseEntity<?> getTasksByCompanyId( @RequestParam long companyId) {
         try {

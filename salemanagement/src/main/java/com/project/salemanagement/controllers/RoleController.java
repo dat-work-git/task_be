@@ -1,11 +1,9 @@
 package com.project.salemanagement.controllers;
 
 import com.project.salemanagement.Services.RoleService;
-import com.project.salemanagement.dtos.CompanyDTO;
 import com.project.salemanagement.dtos.RoleDTO;
 import com.project.salemanagement.models.Role;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
