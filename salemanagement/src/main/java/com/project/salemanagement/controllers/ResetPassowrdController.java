@@ -22,7 +22,7 @@ import java.util.Map;
 public class ResetPassowrdController {
     private final ResetPasswordService resetPasswordService;
     @PostMapping("/renderOtp")
-    public ResponseEntity<?> createOtp(@RequestBody ResetPasswordDTO resetPasswordDTO) throws Exception {
+    public ResponseEntity<?> createOtp(@RequestBody ResetPasswordDTO resetPasswordDTO ) throws Exception {
         try {
             ResetPassword resetPassword = resetPasswordService.createOtp(resetPasswordDTO);
             return ResponseEntity.ok(resetPassword);

@@ -49,12 +49,12 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginDTO userLoginDTO,
-                                       BindingResult result,
-                                       HttpServletRequest httpServletRequest) {
+                                       BindingResult result) {
         try {
             String token = userService.login(userLoginDTO.getEmail(),
                     userLoginDTO.getPassword(),
-                    userLoginDTO.getRoleId());
+                    userLoginDTO.getRoleId()
+            );
             return ResponseEntity.ok(
                     LoginResponse.builder()
                             .message("Login Successfully!")

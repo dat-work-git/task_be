@@ -8,13 +8,22 @@ import com.project.salemanagement.models.Company;
 import com.project.salemanagement.models.Status;
 import com.project.salemanagement.models.Task;
 import com.project.salemanagement.models.User;
+import com.project.salemanagement.response.PageResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +32,8 @@ public class TaskService implements ITasksService {
     private final UserRepo userRepo;
     private final TaskRepo taskRepo;
     private final StatusRepo statusRepo;
+
+
 
     @Transactional
     @Override
@@ -66,6 +77,41 @@ public class TaskService implements ITasksService {
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Task " ));
         List<Task> taskList = taskRepo.findByCompany(company);
         return taskList;
+    }
+
+    @Override
+    public PageResponse<?> getAllTaskAdmin(int pageNo,
+                                              int pageSize,
+                                              String... sorts // java 11 có
+    ) {
+        List<Sort.Order> orders = new ArrayList<>();
+        for(String sortBy: sorts) {
+            if (StringUtils.hasLength(sortBy)) {
+                //id:asc|desc
+                Pattern pattern = Pattern.compile("(\\w+?)(:)(.*)");
+                Matcher matcher = pattern.matcher(sortBy);
+                if (matcher.find()) {
+                    if (matcher.group(3).equalsIgnoreCase("asc")) {
+                        orders.add(new Sort.Order(Sort.Direction.ASC, matcher.group(1)));
+                    }
+                    if (matcher.group(3).equalsIgnoreCase("desc")) {
+                        orders.add(new Sort.Order(Sort.Direction.DESC, matcher.group(1)));
+                    }
+                }
+            }
+        }
+        Pageable pageableUser = PageRequest.of(pageNo,
+                pageSize,
+                Sort.by(orders)
+        );
+        Page<Task> taskPage = taskRepo.findAll(pageableUser);
+
+        return PageResponse.builder()
+                .pageNo(pageNo)
+                .pageSize(pageSize)
+                .totalPage(taskPage.getTotalPages())
+                .items(taskPage.getContent())
+                .build();
     }
 
     @Override

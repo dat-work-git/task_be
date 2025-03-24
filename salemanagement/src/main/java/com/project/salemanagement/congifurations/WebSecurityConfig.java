@@ -5,6 +5,7 @@ import com.project.salemanagement.models.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,35 +22,65 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
-                    requests.requestMatchers("salemanagement/v1/**")
+                    requests
+
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/company/assignedPerson/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/company/**").permitAll()
+                             //Roles
+                            .requestMatchers(HttpMethod.GET, "api/v1/roles/**").hasAnyRole(Role.ADMIN)
+                            // task
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/taskId/**")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/company/**")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/admin/list-task/**")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.PUT, "salemanagement/v1/tasks/**")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/**")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.POST, "salemanagement/v1/tasks/createTask")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.DELETE, "salemanagement/v1/tasks/**")
+                            .hasAnyRole(Role.ADMIN)
+                            // status
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/status")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            .requestMatchers(HttpMethod.POST, "salemanagement/v1/status")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/status/**")
+                            .hasAnyRole(Role.ADMIN)
+                            // company
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/company/admin/**")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.POST, "salemanagement/v1/company")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/company/**")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.PUT, "salemanagement/v1/company")
+                            .hasAnyRole(Role.ADMIN)
+                            .requestMatchers(HttpMethod.PUT, "salemanagement/v1/company/assignedPerson/**")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            // User
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/user/all")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            .requestMatchers(HttpMethod.PUT, "salemanagement/v1/user/**")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/user/details")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            .requestMatchers(HttpMethod.PUT, "salemanagement/v1/user/changePassword")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            // bypass Token
+                            .requestMatchers(HttpMethod.POST, "salemanagement/v1/user/login")
                             .permitAll()
-//                    .requestMatchers(HttpMethod.GET, "salemanagement/v1/company/assignedPerson/**").permitAll()
-//                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/company/**").permitAll()
-                            // Roles
-//                            .requestMatchers(HttpMethod.GET, "api/v1/roles/**").hasAnyRole(Role.ADMIN, Role.USER)
-//                            // categories
-//                            .requestMatchers(HttpMethod.GET, "api/v1/categories/**").permitAll()
-//                            .requestMatchers(HttpMethod.POST, "api/v1/categories/**").hasRole(Role.ADMIN)
-//                            .requestMatchers(HttpMethod.PUT, "api/v1/categories/**").hasRole(Role.ADMIN)
-//                            .requestMatchers(HttpMethod.DELETE, "api/v1/categories/**").hasRole(Role.ADMIN)
-                    // products
+                            .requestMatchers(HttpMethod.POST, "salemanagement/v1/resetPassword/renderOtp")
+                            .permitAll()
+                            .requestMatchers(HttpMethod.POST, "salemanagement/v1/resetPassword/confirmOtp")
+                            .permitAll()
+
                     .anyRequest().authenticated();
                 });
-//        http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
-//            @Override
-//            public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
-//                CorsConfiguration configuration = new CorsConfiguration();
-//                configuration.setAllowedOrigins(List.of("*")); // URL nguồn gốc được phép
-//                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // Phương thức được phép
-//                configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "x-auth-token")); // Header được phép
-//                configuration.setExposedHeaders(List.of("x-auth-token")); // Header được hiển thị trong response
-//                //configuration.setAllowCredentials(true); // Cho phép cookie
-//
-//                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//                source.registerCorsConfiguration("/**", configuration); // Áp dụng cấu hình cho tất cả endpoint
-//                httpSecurityCorsConfigurer.configurationSource(source); // Đăng ký cấu hình
-//            }
-//        });
+
         return http.build();
 
     }

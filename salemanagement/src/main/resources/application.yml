@@ -2,10 +2,10 @@ server:
   port: 8088
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/sale_management?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:sale_management}?useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password:
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
   jpa:
     show-sql: true
     hibernate:
@@ -25,4 +25,4 @@ spring:
 jwt:
   expiration: 2592000
   #30 days = 30 * 24 * 60 * 60
-  secretKey: NL1x/M2kLalft5G+P8qyfY+oLLl9sJx+k1/ZTbw9gD4=
+  secretKey: ${JWT_SECRET:NL1x/M2kLalft5G+P8qyfY+oLLl9sJx+k1/ZTbw9gD4=}

@@ -4,6 +4,7 @@ import com.project.salemanagement.Services.CompanyService;
 import com.project.salemanagement.dtos.CompanyDTO;
 import com.project.salemanagement.models.Company;
 import com.project.salemanagement.response.CompanyResponse;
+import com.project.salemanagement.response.PageResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,14 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
     @GetMapping("/admin")
-    public ResponseEntity<?> getAllCompany(){
-        List<Company> companyList = companyService.getAllCompany();
-        List<CompanyResponse> companyResponseList = CompanyResponse.fromListCompany(companyList);
-        return ResponseEntity.ok().body(companyResponseList);
+    public ResponseEntity<?> getAllCompany(int pageNo,
+                                           int pageSize,
+                                           String... sortBy){
+        PageResponse<?> companyPage = companyService.getAllCompany( pageNo,
+         pageSize,
+                sortBy);
+        //List<CompanyResponse> companyResponseList = CompanyResponse.fromListCompany(companyPage.getItems());
+        return ResponseEntity.ok().body(companyPage);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getCompany(@PathVariable Long id){

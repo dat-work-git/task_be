@@ -1,9 +1,8 @@
 package com.project.salemanagement.controllers;
-
-import com.project.salemanagement.Repositories.TaskRepo;
 import com.project.salemanagement.Services.TaskService;
 import com.project.salemanagement.dtos.TaskDTO;
 import com.project.salemanagement.models.Task;
+import com.project.salemanagement.response.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,10 +41,13 @@ public class TaskController {
         }
     }
     @GetMapping("/admin/list-task") // lấy danh sách order của user theo id
-    public ResponseEntity<?> getTaskByAdmin(@Valid @RequestParam("taskId") long taskId) {
+    public ResponseEntity<?> getTaskByAdmin( @RequestParam("pageNo") int pageNo,
+                                            @RequestParam("pageSize") int pageSize,
+                                             @RequestParam(required = false) String... sortBy
+                                            ) {
         try {
-            Task task = taskService.getTask(taskId);
-            return ResponseEntity.ok().body(task);
+            PageResponse<?> pageResponseTask = taskService.getAllTaskAdmin(pageNo,pageSize, sortBy);
+            return ResponseEntity.ok().body(pageResponseTask);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

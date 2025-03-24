@@ -41,8 +41,8 @@ public class CompanyResponse {
                     .email(company.getEmail())
                     .phone(company.getPhone())
                     .assignedPerson(userResponse)
-                    .createdAt(company.getCreated_at())
-                    .updateAt(company.getUpdated_at())
+                    .createdAt(company.getCreatedAt())
+                    .updateAt(company.getUpdatedAt())
                     .build();
             companyResponseList.add(companyResponse);
         }

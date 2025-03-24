@@ -73,9 +73,7 @@ public class UserService implements IUserService {
         if (!passwordEncoder.matches(password, user.getPassword())){
             throw new Exception("Invalid phone number/password");
         }
-        if (user.getRole().getId() != RoleId){
-            throw new Exception("Wrong Role!");
-        }
+
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password, user.getAuthorities());
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
