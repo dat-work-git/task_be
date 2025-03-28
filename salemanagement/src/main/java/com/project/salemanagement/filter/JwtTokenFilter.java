@@ -60,7 +60,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final List<Pair<String, String>> byPassTokens = Arrays.asList(
                 Pair.of("salemanagement/v1/resetPassword/renderOtp", "POST"),
                 Pair.of("salemanagement/v1/resetPassword/confirmOtp", "POST"),
-                Pair.of("salemanagement/v1/user/login", "POST")
+                Pair.of("salemanagement/v1/user/login", "POST"),
+                Pair.of("salemanagement/v1/user/register", "POST")
                 );
         for (Pair<String, String> byPassToken : byPassTokens) {
             if (request.getServletPath().contains(byPassToken.getLeft())

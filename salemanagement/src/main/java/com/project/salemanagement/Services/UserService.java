@@ -37,10 +37,9 @@ public class UserService implements IUserService {
         if (!userRepo.existsByEmail(userDTO.getEmail())) {
             Role role = roleRepo.findById(userDTO.getRoleId()).orElseThrow(
                     () -> new IllegalArgumentException("không tìm thấy role"));
-//            if (role.getName().equals(Role.ADMIN)) {
-//                throw new InvalidParameterException("mày không thể tạo acc admin được thằng nhóc à!");
-//
-//            }
+            if (role.getName().equals(Role.ADMIN)) {
+                throw new RuntimeException("Cannot register admin!");
+            }
             User user = User.builder()
                     .name(userDTO.getFullName())
                     .email(userDTO.getEmail())

@@ -18,7 +18,7 @@ public abstract class BaseModel {
 
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
-    @Column(name="created_at",nullable = false)
+    @Column(name="created_at",nullable = false, updatable = false)
     private Date createdAt;
 
     @UpdateTimestamp
