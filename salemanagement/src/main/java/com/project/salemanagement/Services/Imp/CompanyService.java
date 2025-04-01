@@ -1,9 +1,9 @@
-package com.project.salemanagement.Services;
+package com.project.salemanagement.Services.Imp;
 import com.project.salemanagement.Repositories.CompanyRepo;
 import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.Services.ICompanyService;
 import com.project.salemanagement.dtos.CompanyDTO;
 import com.project.salemanagement.models.Company;
-import com.project.salemanagement.models.Task;
 import com.project.salemanagement.models.User;
 import com.project.salemanagement.response.PageResponse;
 import lombok.AllArgsConstructor;

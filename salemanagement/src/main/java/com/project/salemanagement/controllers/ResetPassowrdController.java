@@ -1,15 +1,13 @@
 package com.project.salemanagement.controllers;
 
-import com.project.salemanagement.Services.ResetPasswordService;
+import com.project.salemanagement.Services.Imp.ResetPasswordService;
 import com.project.salemanagement.dtos.OtpDTO;
 import com.project.salemanagement.dtos.ResetPasswordDTO;
 import com.project.salemanagement.models.ResetPassword;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 

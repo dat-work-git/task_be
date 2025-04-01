@@ -1,6 +1,7 @@
-package com.project.salemanagement.Services;
+package com.project.salemanagement.Services.Imp;
 
 import com.project.salemanagement.Repositories.RoleRepo;
+import com.project.salemanagement.Services.IRoleService;
 import com.project.salemanagement.dtos.RoleDTO;
 import com.project.salemanagement.models.Role;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class RoleService implements  IRoleService{
+public class RoleService implements IRoleService {
     private final RoleRepo roleRepo;
     @Override
     public Role createRole(RoleDTO roleDTO) {

@@ -1,6 +1,7 @@
-package com.project.salemanagement.Services;
+package com.project.salemanagement.Services.Imp;
 import com.project.salemanagement.Repositories.ResetPasswordRepo;
 import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.Services.IResetPasswordService;
 import com.project.salemanagement.dtos.ResetPasswordDTO;
 import com.project.salemanagement.models.ResetPassword;
 import com.project.salemanagement.models.User;
@@ -14,7 +15,7 @@ import java.util.UUID;
 import java.security.SecureRandom;
 @Service
 @RequiredArgsConstructor
-public class ResetPasswordService implements IResetPasswordService{
+public class ResetPasswordService implements IResetPasswordService {
     private final UserRepo userRepo;
     private final ResetPasswordRepo resetPasswordRepo;
     private final SendEmail sendEmail;

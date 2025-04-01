@@ -1,5 +1,5 @@
 package com.project.salemanagement.controllers;
-import com.project.salemanagement.Services.TaskService;
+import com.project.salemanagement.Services.Imp.TaskService;
 import com.project.salemanagement.dtos.TaskDTO;
 import com.project.salemanagement.models.Task;
 import com.project.salemanagement.response.PageResponse;

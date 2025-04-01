@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                             .requestMatchers(HttpMethod.GET, "salemanagement/v1/status/**")
                             .hasAnyRole(Role.ADMIN)
                             // company
-                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/company/admin/**")
+                            .requestMatchers(HttpMethod.GET, "/salemanagement/v1/company/admin**")
                             .hasAnyRole(Role.ADMIN)
                             .requestMatchers(HttpMethod.POST, "salemanagement/v1/company")
                             .hasAnyRole(Role.ADMIN)

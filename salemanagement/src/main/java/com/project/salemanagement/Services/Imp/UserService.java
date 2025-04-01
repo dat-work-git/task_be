@@ -1,8 +1,9 @@
-package com.project.salemanagement.Services;
+package com.project.salemanagement.Services.Imp;
 
 import com.project.salemanagement.Repositories.CompanyRepo;
 import com.project.salemanagement.Repositories.RoleRepo;
 import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.Services.IUserService;
 import com.project.salemanagement.components.JwtTokenUtil;
 import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
@@ -10,7 +11,6 @@ import com.project.salemanagement.dtos.UserUpdateDTO;
 import com.project.salemanagement.models.Company;
 import com.project.salemanagement.models.Role;
 import com.project.salemanagement.models.User;
-import com.project.salemanagement.response.UserResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,5 +1,6 @@
-package com.project.salemanagement.Services;
+package com.project.salemanagement.Services.Imp;
 
+import com.project.salemanagement.Services.ISendEmail;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;

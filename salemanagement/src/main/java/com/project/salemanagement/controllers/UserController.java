@@ -1,6 +1,6 @@
 package com.project.salemanagement.controllers;
 
-import com.project.salemanagement.Services.UserService;
+import com.project.salemanagement.Services.Imp.UserService;
 import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.dtos.UserUpdateDTO;
@@ -8,7 +8,6 @@ import com.project.salemanagement.dtos.UserLoginDTO;
 import com.project.salemanagement.models.User;
 import com.project.salemanagement.response.LoginResponse;
 import com.project.salemanagement.response.UserResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

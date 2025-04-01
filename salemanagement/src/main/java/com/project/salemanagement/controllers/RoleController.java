@@ -1,6 +1,6 @@
 package com.project.salemanagement.controllers;
 
-import com.project.salemanagement.Services.RoleService;
+import com.project.salemanagement.Services.Imp.RoleService;
 import com.project.salemanagement.dtos.RoleDTO;
 import com.project.salemanagement.models.Role;
 import jakarta.validation.Valid;

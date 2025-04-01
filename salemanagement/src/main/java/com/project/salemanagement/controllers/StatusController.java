@@ -1,5 +1,5 @@
 package com.project.salemanagement.controllers;
-import com.project.salemanagement.Services.StatusService;
+import com.project.salemanagement.Services.Imp.StatusService;
 import com.project.salemanagement.dtos.StatusDTO;
 import com.project.salemanagement.models.Status;
 import jakarta.validation.Valid;

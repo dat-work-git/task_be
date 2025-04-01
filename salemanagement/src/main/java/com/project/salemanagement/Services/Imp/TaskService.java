@@ -1,8 +1,9 @@
-package com.project.salemanagement.Services;
+package com.project.salemanagement.Services.Imp;
 import com.project.salemanagement.Repositories.CompanyRepo;
 import com.project.salemanagement.Repositories.StatusRepo;
 import com.project.salemanagement.Repositories.TaskRepo;
 import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.Services.ITasksService;
 import com.project.salemanagement.dtos.TaskDTO;
 import com.project.salemanagement.models.Company;
 import com.project.salemanagement.models.Status;
