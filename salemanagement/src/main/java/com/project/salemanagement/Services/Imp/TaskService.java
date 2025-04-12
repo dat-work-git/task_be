@@ -126,6 +126,7 @@ public class TaskService implements ITasksService {
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
         task.setTitle(taskDTO.getTitle());
         task.setAction(taskDTO.getAction());
+        task.setDescription(taskDTO.getDescription());
         task.setCompany(company);
         task.setUrgent(taskDTO.getUrgent());
         task.setStatus(status);

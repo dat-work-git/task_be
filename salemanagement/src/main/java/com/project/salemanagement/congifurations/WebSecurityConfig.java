@@ -36,7 +36,7 @@ public class WebSecurityConfig {
                             .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/admin/list-task/**")
                             .hasAnyRole(Role.ADMIN)
                             .requestMatchers(HttpMethod.PUT, "salemanagement/v1/tasks/**")
-                            .hasAnyRole(Role.ADMIN)
+                            .hasAnyRole(Role.ADMIN, Role.USER)
                             .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/**")
                             .hasAnyRole(Role.ADMIN)
                             .requestMatchers(HttpMethod.POST, "salemanagement/v1/tasks/createTask")
