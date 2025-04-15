@@ -3,11 +3,12 @@ package com.project.salemanagement.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserUpdateDTO {
     @JsonProperty("fullname")
     private String fullName;

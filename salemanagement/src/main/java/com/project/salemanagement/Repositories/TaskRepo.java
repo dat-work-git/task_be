@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface TaskRepo extends JpaRepository<Task, Long> {
     List<Task> findByCompany(Company company);
+    List<Task> findByParent(Task task);
 }

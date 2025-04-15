@@ -4,11 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Data
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserLoginDTO {
     @NotBlank(message = "Email can not be empty!")
     private  String email;

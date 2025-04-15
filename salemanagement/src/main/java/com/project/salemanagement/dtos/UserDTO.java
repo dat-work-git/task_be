@@ -6,11 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Date;
-@Data
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDTO {
     @JsonProperty("fullname")
     private String fullName;

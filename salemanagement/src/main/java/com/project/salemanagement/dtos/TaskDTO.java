@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 @Getter
-@Setter
 @AllArgsConstructor
 @Builder
 public class TaskDTO {
@@ -20,4 +19,5 @@ public class TaskDTO {
     private LocalDate startDate;
     private LocalDate completedDate;
     private Long companyId;
+    private Long parentTask;
 }

@@ -2,11 +2,9 @@ package com.project.salemanagement.dtos;
 
 import lombok.*;
 
-@Data
 @Getter
-@Setter
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Builder
 public class StatusDTO {
     String name;

@@ -5,8 +5,9 @@ import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class CompanyDTO {
     @NotEmpty(message = "Customer Name can not be empty!")

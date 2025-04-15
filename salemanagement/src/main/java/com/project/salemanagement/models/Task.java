@@ -1,17 +1,12 @@
 package com.project.salemanagement.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "tasks")
@@ -57,7 +52,7 @@ public class Task extends BaseModel{
     @Column(name = "completed_date")
     private LocalDate completedDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_task_id")
     @JsonBackReference
     private Task parent;
