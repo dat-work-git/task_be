@@ -72,6 +72,9 @@ public class WebSecurityConfig {
                             .hasAnyRole(Role.ADMIN,Role.USER)
                             .requestMatchers(HttpMethod.POST, "salemanagement/v1/user/register")
                             .permitAll()
+                            // dashboard
+                            .requestMatchers(HttpMethod.POST, "salemanagement/v1/dashboard")
+                            .permitAll()
                             // bypass Token
                             .requestMatchers(HttpMethod.POST, "salemanagement/v1/user/login")
                             .permitAll()
