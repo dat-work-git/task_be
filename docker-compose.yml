@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  discoverserver:
+  salemanagement:
     build:
       context: .
       dockerfile: salemanagement/Dockerfile
