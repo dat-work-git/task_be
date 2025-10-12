@@ -8,16 +8,17 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import java.security.InvalidParameterException;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -30,6 +31,11 @@ public class JwtTokenUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", user.getEmail());
         claims.put("userId",user.getId());
+        List<String> roles = user.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        claims.put("roles",roles);
         try {
             String token = Jwts.builder()
                     .setClaims(claims) // extract claims
@@ -68,10 +74,23 @@ public class JwtTokenUtil {
     public String extractEmail(String token){
         return  extractClaim(token, Claims::getSubject);
     }
+    public List<String> extractRoles(String token) {
+        Claims claims = extractAllClaims(token);
+        List<String> roles = claims.get("roles", List.class);
+        if (roles.isEmpty()){
+        return List.of();}
+        return  roles;
+    }
+
     public boolean validateToken(String token, UserDetails userDetails){
         String phone = extractEmail(token);
         return (phone.equals(userDetails.getUsername())
                 && !isTokenExpired(token) ); // kiểm tra xem còn hạn hay không
     }
+
+    public boolean validTokenExpired(String token){
+       return !isTokenExpired(token);
+    }
+
 
 }

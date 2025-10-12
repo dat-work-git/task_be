@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  discoverserver:
+    build:
+      context: .
+      dockerfile: salemanagement/Dockerfile
+    ports:
+      - "9001:9001"
+    networks:
+      - salemanagement-networks
+ 
+networks: 
+  salemanagement-networks:
+    driver: bridge

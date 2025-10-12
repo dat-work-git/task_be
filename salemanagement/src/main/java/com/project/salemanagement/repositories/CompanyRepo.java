@@ -1,4 +1,4 @@
-package com.project.salemanagement.Repositories;
+package com.project.salemanagement.repositories;
 
 import com.project.salemanagement.models.Company;
 import org.springframework.data.jpa.repository.JpaRepository;

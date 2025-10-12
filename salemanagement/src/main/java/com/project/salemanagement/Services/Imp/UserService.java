@@ -1,8 +1,8 @@
 package com.project.salemanagement.Services.Imp;
 
-import com.project.salemanagement.Repositories.CompanyRepo;
-import com.project.salemanagement.Repositories.RoleRepo;
-import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.repositories.CompanyRepo;
+import com.project.salemanagement.repositories.RoleRepo;
+import com.project.salemanagement.repositories.UserRepo;
 import com.project.salemanagement.Services.IUserService;
 import com.project.salemanagement.components.JwtTokenUtil;
 import com.project.salemanagement.dtos.UserChangePassDTO;

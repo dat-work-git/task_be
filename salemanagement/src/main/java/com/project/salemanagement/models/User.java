@@ -1,6 +1,7 @@
 package com.project.salemanagement.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,32 +15,34 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="user")
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class User extends BaseModel implements UserDetails {
 
-    @Column(name="fullname",nullable = false)
+    @Column(name = "fullname", nullable = false)
     private String name;
-    @Column(name="email",unique = true,nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
-    @Column(name="phone",nullable = false)
+    @Column(name = "phone", nullable = false)
     private String phone;
-    @Column(name="password",nullable = false)
+    @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
-    @Column(name="address")
+    @Column(name = "address")
     private String address;
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private String is_active;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("ROLE_"+ getRole().getName().toUpperCase()));
+        authorityList.add(new SimpleGrantedAuthority("ROLE_" + getRole().getName().toUpperCase()));
         return authorityList;
     }
 
@@ -55,7 +58,7 @@ public class User extends BaseModel implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.is_active.equals("1");
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.project.salemanagement.Services.Imp;
 
-import com.project.salemanagement.Repositories.StatusRepo;
+import com.project.salemanagement.repositories.StatusRepo;
 import com.project.salemanagement.Services.IStatusService;
 import com.project.salemanagement.dtos.StatusDTO;
 import com.project.salemanagement.models.Status;

@@ -1,6 +1,6 @@
 package com.project.salemanagement.congifurations;
 
-import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.repositories.UserRepo;
 import com.project.salemanagement.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

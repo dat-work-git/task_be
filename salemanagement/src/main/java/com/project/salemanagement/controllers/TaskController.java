@@ -78,8 +78,8 @@ public class TaskController {
                         .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
             }
-            Task task = taskService.updateTask(taskId,taskDTO);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(task);
+            List<Task> taskList = taskService.updateTask(taskId,taskDTO);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(taskList);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

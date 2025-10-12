@@ -1,9 +1,9 @@
 package com.project.salemanagement.Services.Imp;
 
-import com.project.salemanagement.Repositories.CompanyRepo;
-import com.project.salemanagement.Repositories.StatusRepo;
-import com.project.salemanagement.Repositories.TaskRepo;
-import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.repositories.CompanyRepo;
+import com.project.salemanagement.repositories.StatusRepo;
+import com.project.salemanagement.repositories.TaskRepo;
+import com.project.salemanagement.repositories.UserRepo;
 import com.project.salemanagement.Services.ITasksService;
 import com.project.salemanagement.dtos.TaskDTO;
 import com.project.salemanagement.models.Company;
@@ -24,9 +24,9 @@ import org.springframework.util.StringUtils;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,7 +39,7 @@ public class TaskService implements ITasksService {
 
     @Transactional
     @Override
-    public List<Task> createTask(TaskDTO taskDTO) {
+    public List<Task> createTask(TaskDTO taskDTO) throws Exception {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Company with id:" + taskDTO.getCompanyId()));
         // danh sach user
@@ -54,10 +54,13 @@ public class TaskService implements ITasksService {
         Status status = statusRepo.findById(statusId)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
 
-        Task parentTask = taskRepo.findById(taskDTO.getParentTask())
-                .orElseThrow(() -> new EntityNotFoundException("Cannot find Parent task!"));
+        Task parentTask = null;
+        if (taskDTO.getParentTask() != null && taskDTO.getParentTask() > 0) {
+            parentTask = taskRepo.findById(taskDTO.getParentTask())
+                    .orElseThrow(() -> new Exception("Cannot find Parent task!"));
+        }
 
-        List<Task> taskSubList = taskRepo.findByParent(parentTask);
+//        List<Long> taskSubList = taskRepo.findByParent(parentTask).stream().map(Task::getId).collect(Collectors.toList());
 
         Task task = Task.builder()
                 .title(taskDTO.getTitle())
@@ -69,8 +72,7 @@ public class TaskService implements ITasksService {
                 .completedDate(taskDTO.getCompletedDate())
                 .assignedUsers(userList)
                 .status(status)
-                .parent(parentTask)
-                .subtasks(taskSubList)
+                .parent(parentTask != null ? parentTask : null)
                 .build();
         taskRepo.save(task);
         List<Task> taskList = taskByCompanyId(taskDTO.getCompanyId());
@@ -88,7 +90,7 @@ public class TaskService implements ITasksService {
     public List<Task> taskByCompanyId(long companyId) {
         Company company = companyRepo.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Task "));
-        List<Task> taskList = taskRepo.findByCompany(company);
+        List<Task> taskList = taskRepo.findByCompanyAndParentIsNull(company);
         return taskList;
     }
 
@@ -128,7 +130,7 @@ public class TaskService implements ITasksService {
     }
 
     @Override
-    public Task updateTask(long id, TaskDTO taskDTO) {
+    public List<Task> updateTask(long id, TaskDTO taskDTO) {
         Company company = companyRepo.findById(taskDTO.getCompanyId())
                 .orElseThrow(() -> new InvalidParameterException("Cannot Found Company!"));
         List<User> userList = userRepo.findByEmailIn(taskDTO.getAssignedUsers());
@@ -136,10 +138,10 @@ public class TaskService implements ITasksService {
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Task"));
         Status status = statusRepo.findById(taskDTO.getStatus())
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Status with id:" + taskDTO.getAssignedUsers()));
-        Task parentTask = taskRepo.findById((taskDTO.getParentTask() != null && taskDTO.getParentTask() > 0)?taskDTO.getParentTask():0).orElse(
+        Task parentTask = taskRepo.findById((taskDTO.getParentTask() != null && taskDTO.getParentTask() > 0) ? taskDTO.getParentTask() : 0).orElse(
                 null
         );
-        List<Task> taskSubList = taskRepo.findByParent(parentTask);
+        List<Long> taskSubList = taskRepo.findByParent(parentTask).stream().map(Task::getId).collect(Collectors.toList());
         task.setTitle(taskDTO.getTitle());
         task.setAction(taskDTO.getAction());
         task.setDescription(taskDTO.getDescription());
@@ -148,11 +150,11 @@ public class TaskService implements ITasksService {
         task.setStatus(status);
         task.setAssignedUsers(userList);
         task.setParent(parentTask);
-        task.setSubtasks(taskSubList);
         task.setStartDate(taskDTO.getStartDate());
         task.setCompletedDate(taskDTO.getCompletedDate());
         taskRepo.save(task);
-        return task;
+        List<Task> taskList = taskByCompanyId(taskDTO.getCompanyId());
+        return taskList;
     }
 
     @Transactional

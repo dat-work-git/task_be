@@ -1,6 +1,7 @@
 package com.project.salemanagement.controllers;
 
 import com.project.salemanagement.Services.Imp.UserService;
+import com.project.salemanagement.components.JwtTokenUtil;
 import com.project.salemanagement.dtos.UserChangePassDTO;
 import com.project.salemanagement.dtos.UserDTO;
 import com.project.salemanagement.dtos.UserUpdateDTO;
@@ -8,25 +9,40 @@ import com.project.salemanagement.dtos.UserLoginDTO;
 import com.project.salemanagement.models.User;
 import com.project.salemanagement.response.LoginResponse;
 import com.project.salemanagement.response.UserResponse;
+import com.sun.security.auth.UserPrincipal;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("salemanagement/v1/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
+    private final JwtTokenUtil jwtTokenUtil;
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO,
+                                        @AuthenticationPrincipal UserDetails userDetails,
+                                        BindingResult result) {
         try {
+            if (userDetails == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("You must be logged in");
+            }
 
+            boolean isAdmin = userDetails.getAuthorities().stream()
+                    .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
+
+            if (!isAdmin) {
+                return ResponseEntity.badRequest().body("You are not ADMIN");
+            }
             if (result.hasErrors()) {
                 List<String> errorMessages = result.getFieldErrors().stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
                 return ResponseEntity.badRequest().body(errorMessages);
@@ -79,6 +95,7 @@ public class UserController {
             List<UserResponse> userResponse = UserResponse.fromListUser(userList);
             return ResponseEntity.ok().body(userResponse);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

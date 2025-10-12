@@ -1,6 +1,6 @@
 package com.project.salemanagement.Services.Imp;
-import com.project.salemanagement.Repositories.ResetPasswordRepo;
-import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.repositories.ResetPasswordRepo;
+import com.project.salemanagement.repositories.UserRepo;
 import com.project.salemanagement.Services.IResetPasswordService;
 import com.project.salemanagement.dtos.ResetPasswordDTO;
 import com.project.salemanagement.models.ResetPassword;

@@ -1,6 +1,6 @@
 package com.project.salemanagement.Services.Imp;
-import com.project.salemanagement.Repositories.CompanyRepo;
-import com.project.salemanagement.Repositories.UserRepo;
+import com.project.salemanagement.repositories.CompanyRepo;
+import com.project.salemanagement.repositories.UserRepo;
 import com.project.salemanagement.Services.ICompanyService;
 import com.project.salemanagement.dtos.CompanyDTO;
 import com.project.salemanagement.models.Company;

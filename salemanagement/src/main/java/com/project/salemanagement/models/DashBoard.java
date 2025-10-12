@@ -1,8 +1,6 @@
 package com.project.salemanagement.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -13,12 +11,13 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class DashBoard extends BaseModel{
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "email_user", nullable = false)
-    private String emailUser;
+    @ManyToOne
+    @JoinColumn(name = "email_user", nullable = false)
+    private User emailUser;
 }

@@ -23,6 +23,15 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
                     requests
+                            // Bypass FE
+                            .requestMatchers("/").permitAll()
+                            .requestMatchers("/index.html").permitAll()
+                            .requestMatchers("/salemanagement/**").permitAll()
+                            .requestMatchers("/**/*.js").permitAll()
+                            .requestMatchers("/**/*.css").permitAll()
+                            .requestMatchers("/**/*.png").permitAll()
+
+
 
                             .requestMatchers(HttpMethod.GET, "salemanagement/v1/company/assignedPerson/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/company/**").permitAll()
@@ -71,10 +80,12 @@ public class WebSecurityConfig {
                             .requestMatchers(HttpMethod.PUT, "salemanagement/v1/user/changePassword")
                             .hasAnyRole(Role.ADMIN,Role.USER)
                             .requestMatchers(HttpMethod.POST, "salemanagement/v1/user/register")
-                            .permitAll()
+                            .hasAnyRole(Role.ADMIN)
                             // dashboard
                             .requestMatchers(HttpMethod.POST, "salemanagement/v1/dashboard")
-                            .permitAll()
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            .requestMatchers(HttpMethod.GET, "salemanagement/v1/dashboard")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
                             // bypass Token
                             .requestMatchers(HttpMethod.POST, "salemanagement/v1/user/login")
                             .permitAll()

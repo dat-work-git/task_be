@@ -9,11 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 
 public interface ITasksService {
-    List<Task> createTask(TaskDTO taskDTO) ;
+    List<Task> createTask(TaskDTO taskDTO) throws Exception;
     Task getTask(long id);
     List<Task> taskByCompanyId(long companyId);
     PageResponse<?> getAllTaskAdmin(int pageNo, int pageSize, String... sorts);
-    Task updateTask(long id, TaskDTO taskDTO);
+    List<Task> updateTask(long id, TaskDTO taskDTO);
     Long deleteTask(long id);
     boolean existsByName(String name);
     //ProductImage createProductImage(long productId, ProductImagesDTO productImagesDTO);

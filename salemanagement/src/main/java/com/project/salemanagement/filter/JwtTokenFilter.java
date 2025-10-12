@@ -2,6 +2,7 @@ package com.project.salemanagement.filter;
 
 import com.project.salemanagement.components.JwtTokenUtil;
 import com.project.salemanagement.models.User;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,15 +11,17 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.internal.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -40,10 +43,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 final String token = authHeader.substring(7);
                 final String email = jwtTokenUtil.extractEmail(token);
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    User user = (User) userDetailsService.loadUserByUsername(email);
-                    if (jwtTokenUtil.validateToken(token, user)) {
+                    List<String> roles = jwtTokenUtil.extractRoles(token);
+                    List<GrantedAuthority> authorities = roles.stream()
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
+
+                    if (jwtTokenUtil.validTokenExpired(token)) {
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                                new UsernamePasswordAuthenticationToken(email, null, authorities);
                         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     }
@@ -57,7 +64,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private boolean isByPassToken(@NonNull HttpServletRequest request) {
+        System.out.println("path: "+request.getServletPath()+" method "+ request.getMethod());
         final List<Pair<String, String>> byPassTokens = Arrays.asList(
+                Pair.of("/", "GET"),
+                Pair.of("/index.html", "GET"),
+                Pair.of("/salemanagement/", "GET"),
+                Pair.of("/salemanagement/**", "GET"),
                 Pair.of("salemanagement/v1/resetPassword/renderOtp", "POST"),
                 Pair.of("salemanagement/v1/resetPassword/confirmOtp", "POST"),
                 Pair.of("salemanagement/v1/user/login", "POST"),

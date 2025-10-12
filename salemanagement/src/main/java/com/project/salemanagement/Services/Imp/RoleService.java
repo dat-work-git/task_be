@@ -1,6 +1,6 @@
 package com.project.salemanagement.Services.Imp;
 
-import com.project.salemanagement.Repositories.RoleRepo;
+import com.project.salemanagement.repositories.RoleRepo;
 import com.project.salemanagement.Services.IRoleService;
 import com.project.salemanagement.dtos.RoleDTO;
 import com.project.salemanagement.models.Role;
