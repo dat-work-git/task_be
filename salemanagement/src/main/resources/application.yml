@@ -5,13 +5,12 @@ spring:
   datasource:
     url: jdbc:postgresql://103.126.161.148:5432/task_management
     username: postgres
-    password: "2003"   
+    password: 2003
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
 
   servlet:
     multipart:
