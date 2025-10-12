@@ -4,8 +4,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/task_management
     driver-class-name: org.postgresql.Driver
-    username: ${USERNAME_DB}
-    password: ${PASSWORD_DB}
+    username: ${USERNAME_DB:postgres}
+    password: ${PASSWORD_DB:2003}
   jpa:
     hibernate:
       ddl-auto: update
