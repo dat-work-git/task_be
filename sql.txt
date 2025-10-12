@@ -1,2 +1,0 @@
-ALTER TABLE tasks
-ADD created_by varchar(255)
