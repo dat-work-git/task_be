@@ -1,7 +1,7 @@
 FROM maven:3.8.5-openjdk-17-slim as build
 WORKDIR /app
 COPY ./salemanagement ./salemanagement
-WORKDIR /app/shopapp
+WORKDIR /app/salemanagement
 RUN mvn clean package -DskipTests
 
 FROM openjdk:21-jdk-slim
