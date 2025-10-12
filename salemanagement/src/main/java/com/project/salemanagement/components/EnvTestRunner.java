@@ -20,7 +20,7 @@ public class EnvTestRunner implements CommandLineRunner {
 
     @Value("${jwt.secretKey}")
     private String jwtSecret;
-    
+
 
     @Override
     public void run(String... args) throws Exception {
