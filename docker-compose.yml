@@ -5,7 +5,7 @@ services:
     image: task_be-salemanagement
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: salemanagement/Dockerfile
     container_name: task_be-salemanagement
     network_mode: "host"   # container dùng network của host
     environment:
