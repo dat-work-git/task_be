@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   task_be:
-    image: task_be-salemanagement
+    image: "${DOCKER_USERNAME}/task_be:latest"
     build:
       context: .
       dockerfile: salemanagement/Dockerfile
