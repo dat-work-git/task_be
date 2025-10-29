@@ -28,7 +28,7 @@ jobs:
   deploy:
         needs:  build-and-push
         runs-on: ubuntu-latest
-        
+
         steps:
           - name: Checkout repository
             uses: actions/checkout@v4
@@ -39,4 +39,7 @@ jobs:
               username: ${{ secrets.SERVER_USERNAME }}
               key: ${{ secrets.SERVER_KEY }}
               port: ${{ secrets.SERVER_PORT }}
-              script_path: whoami
+              script: |
+                whoami
+                pwd
+                ls -la
