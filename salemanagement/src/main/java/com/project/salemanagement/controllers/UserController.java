@@ -72,7 +72,7 @@ public class UserController {
             );
             return ResponseEntity.ok(
                     LoginResponse.builder()
-                            .message("Login Successfully!")
+                            .message("Login Successfully V2!")
                             .token(token)
                             .build()
             );
