@@ -1,21 +1,16 @@
 package com.project.salemanagement.controllers;
 
 import com.project.salemanagement.Services.Imp.DashBoardService;
-import com.project.salemanagement.dtos.CompanyDTO;
 import com.project.salemanagement.dtos.DashBoardDTO;
-import com.project.salemanagement.models.Company;
 import com.project.salemanagement.models.DashBoard;
 import com.project.salemanagement.response.ResponseData;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
