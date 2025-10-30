@@ -14,7 +14,7 @@ public class HeathCheckController {
 
     @GetMapping("")
     public ResponseData<?> HeathCheck() {
-            return new ResponseData<>(HttpStatus.OK.value(), "Heathcheckok!");
+            return new ResponseData<>(HttpStatus.OK.value(), "Heathcheck2ok!");
         
 
     }
