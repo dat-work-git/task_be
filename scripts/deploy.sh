@@ -18,7 +18,7 @@ fi
 docker compose -f docker-compose.yml pull task_be
 docker compose -f docker-compose.yml up -d task_be
 
-sleep 10  # đợi container khởi động
+sleep 15  # đợi container khởi động
 CONTAINER_STATUS=$(docker inspect -f '{{.State.Status}}' task_be_container)
 if [ "$CONTAINER_STATUS" != "running" ]; then
   echo "Container crashed! Rolling back..."
