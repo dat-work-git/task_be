@@ -8,6 +8,7 @@ git fetch -a
 git checkout $BRANCH
 git pull
 
+
 docker compose -f docker-compose.yml down
 
 if docker image inspect task_be:latest >/dev/null 2>&1; then
