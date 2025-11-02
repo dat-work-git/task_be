@@ -23,19 +23,14 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
                     requests
-                            // Bypass FE
-                            .requestMatchers("/").permitAll()
-                            .requestMatchers("/index.html").permitAll()
-                            .requestMatchers("/salemanagement/**").permitAll()
-                            .requestMatchers("/**/*.js").permitAll()
-                            .requestMatchers("/**/*.css").permitAll()
-                            .requestMatchers("/**/*.png").permitAll()
-
 
 
                             .requestMatchers(HttpMethod.GET, "salemanagement/v1/company/assignedPerson/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/company/**").permitAll()
-                             //Roles
+                            //actuator
+                            .requestMatchers(HttpMethod.GET, "actuator/**")
+                            .hasAnyRole(Role.ADMIN,Role.USER)
+                            //Roles
                             .requestMatchers(HttpMethod.GET, "api/v1/roles/**").hasAnyRole(Role.ADMIN)
                             // task
                             .requestMatchers(HttpMethod.GET, "salemanagement/v1/tasks/taskId/**")
