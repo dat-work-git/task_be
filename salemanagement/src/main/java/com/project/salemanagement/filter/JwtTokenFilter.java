@@ -47,7 +47,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     List<GrantedAuthority> authorities = roles.stream()
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
-
+                    System.out.println("ROLES: "+authorities);
                     if (jwtTokenUtil.validTokenExpired(token)) {
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                                 new UsernamePasswordAuthenticationToken(email, null, authorities);
@@ -66,10 +66,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private boolean isByPassToken(@NonNull HttpServletRequest request) {
         System.out.println("path: "+request.getServletPath()+" method "+ request.getMethod());
         final List<Pair<String, String>> byPassTokens = Arrays.asList(
-                Pair.of("/", "GET"),
-                Pair.of("/index.html", "GET"),
-                Pair.of("/salemanagement/", "GET"),
-                Pair.of("/salemanagement/**", "GET"),
                 Pair.of("salemanagement/v1/resetPassword/renderOtp", "POST"),
                 Pair.of("salemanagement/v1/resetPassword/confirmOtp", "POST"),
                 Pair.of("salemanagement/v1/user/login", "POST"),
