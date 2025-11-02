@@ -54,7 +54,7 @@ public class UserService implements IUserService {
             //}
             userRepo.save(user);
             return user;
-        }
+        }else
         {
             throw new IllegalArgumentException("User was create!");
         }

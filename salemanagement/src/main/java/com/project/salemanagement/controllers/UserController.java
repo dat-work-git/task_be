@@ -32,17 +32,7 @@ public class UserController {
                                         @AuthenticationPrincipal UserDetails userDetails,
                                         BindingResult result) {
         try {
-            if (userDetails == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("You must be logged in");
-            }
 
-            boolean isAdmin = userDetails.getAuthorities().stream()
-                    .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
-
-            if (!isAdmin) {
-                return ResponseEntity.badRequest().body("You are not ADMIN");
-            }
             if (result.hasErrors()) {
                 List<String> errorMessages = result.getFieldErrors().stream().map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
                 return ResponseEntity.badRequest().body(errorMessages);
