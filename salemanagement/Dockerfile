@@ -4,7 +4,7 @@ COPY ./salemanagement ./salemanagement
 WORKDIR /app/salemanagement
 RUN mvn clean package -DskipTests
 
-FROM openjdk:21-slim
+FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=build /app/salemanagement/target/*.jar salemanagement.jar
 EXPOSE 9001
