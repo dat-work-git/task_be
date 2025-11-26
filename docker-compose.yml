@@ -8,7 +8,7 @@ services:
       dockerfile: salemanagement/Dockerfile
     container_name: task_be_container
     volumes:
-      - /var/log/task_be:/app/logs
+      - /root/app/logs:/app/logs   # host:/container
 
     network_mode: "host"   # container dùng network của host
     environment:
