@@ -4,7 +4,7 @@ COPY ./salemanagement ./salemanagement
 WORKDIR /app/salemanagement
 RUN mvn clean package -DskipTests
 
-FROM openjdk:21-jdk-slim
+FROM openjdk:21-slim
 WORKDIR /app
 COPY --from=build /app/salemanagement/target/*.jar salemanagement.jar
 EXPOSE 9001
