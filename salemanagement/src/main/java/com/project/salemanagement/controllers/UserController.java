@@ -69,7 +69,7 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     LoginResponse.builder()
-                            .message("Login Fail!")
+                            .message(e.getMessage())
                             .build()
 
             );

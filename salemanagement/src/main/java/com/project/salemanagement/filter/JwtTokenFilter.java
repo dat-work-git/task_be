@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.internal.Pair;
+import org.slf4j.MDC;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,12 +21,15 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
@@ -34,6 +39,19 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
+            // create reuqest id
+            String requestId = UUID.randomUUID().toString();
+            MDC.put("requestId", requestId);
+
+            // get ip
+            String ip = request.getRemoteAddr();
+
+            // get request detail
+            HttpServletRequest req = (HttpServletRequest) request;
+            // request start
+            long start = System.currentTimeMillis();
+            log.info("<= {} {} {}ms [{}]", req.getMethod(), req.getRequestURI(), Instant.now(), requestId);
+
             if (isByPassToken(request)) {
                 filterChain.doFilter(request, response);
                 return;
@@ -47,7 +65,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     List<GrantedAuthority> authorities = roles.stream()
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
-                    System.out.println("ROLES: "+authorities);
+                    log.info("Authenticating user={} with roles={}", email, roles);
+
                     if (jwtTokenUtil.validTokenExpired(token)) {
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                                 new UsernamePasswordAuthenticationToken(email, null, authorities);
@@ -57,9 +76,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request, response);
+
+            // request end
+            long time = System.currentTimeMillis() - start;
+            log.info("<= {} {} {}ms [{}]", req.getMethod(), req.getRequestURI(), time, requestId);
         } catch (
                 Exception e) {
+            log.error("Unauthorized access: {}", e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        } finally {
+            MDC.clear();
+
         }
     }
 
